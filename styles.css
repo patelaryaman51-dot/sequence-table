@@ -20,3 +20,24 @@
 @media (min-width: 601px) and (max-width: 950px) {
   .board { width: min(96vw, 820px) !important; }
 }
+Open GitHub → styles.css → pencil Edit. Press Ctrl+End, then paste this at the bottom (do not delete existing code):
+@media(min-width:951px){
+  body{background:#071d15!important}
+  .wood{padding:20px 8vw 150px!important;background:radial-gradient(circle at 50% 0,#123a29 0,#071d15 48%,#04130d 100%)!important}
+  .game{grid-template-columns:minmax(680px,1fr) 310px!important;grid-template-rows:minmax(620px,1fr) auto!important;gap:18px!important;max-width:1280px!important;margin:auto!important;align-items:stretch!important}
+  .center{grid-column:1!important;grid-row:1!important;justify-content:center!important;position:relative!important;padding-top:56px!important}
+  .turn{position:absolute!important;top:0!important;left:0!important;right:0!important;min-height:45px!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;padding:0 16px!important;background:#0b281d!important;border:1px solid #9f7f34!important;border-radius:9px!important;color:#f2d982!important}
+  .turn:before{content:'SEQUENCE · DIGITAL TABLETOP EDITION'!important;margin-right:auto!important;font:700 17px Fraunces,serif!important;color:#faeed2!important}
+  .board{width:min(100%,760px)!important;border:13px solid #563418!important;border-radius:17px!important;box-shadow:0 0 0 3px #b89035,0 16px 33px #000b!important}
+  .cell{font-size:clamp(9px,1vw,14px)!important;border-color:#506847!important;background:#f5efd9!important}
+  .cell:nth-child(odd){background:#fcf7e9!important}
+  .cell.free{background:linear-gradient(145deg,#161d13,#6a421e)!important;color:#f7dc85!important;font-size:10px!important}
+  .players{grid-column:2!important;grid-row:1!important;align-self:start!important;background:#0b281d!important;border:1px solid #7d6834!important;padding:12px!important;border-radius:9px!important;gap:8px!important}
+  .players:before{content:'PLAYERS'!important;font:700 12px 'DM Mono'!important;letter-spacing:.12em!important;color:#e9d89d!important}
+  .player{background:#0a1e16!important;border-color:#294d39!important;box-shadow:none!important;padding:10px!important}
+  .side{grid-column:2!important;grid-row:1!important;align-self:end!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;background:#0b281d!important;border-color:#7d6834!important;padding:12px!important}
+  .side .history{display:none!important}
+  .hand-area{grid-column:1/-1!important;grid-row:2!important;min-height:132px!important;margin:0 -8vw -150px!important;padding:15px 7vw 10px!important;background:linear-gradient(90deg,#061b12,#173c2b 50%,#061b12)!important;border-top:1px solid #968141!important}
+  .hand:before{content:'YOUR HAND'!important;align-self:flex-start!important;margin:4px 24px 0 0!important;font:700 14px Fraunces,serif!important;color:#f0dc9d!important;white-space:nowrap!important}
+  .card{width:78px!important;height:108px!important;flex-basis:78px!important;margin-right:7px!important}
+}
