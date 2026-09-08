@@ -22,10 +22,7 @@ function deck(){
 
 function board(){
   const cards=[]; let k=0; const normal=[];
-  // Generate 96 standard cards (2 decks without Jacks)
   for(const s of suits) for(const r of ranks) if(r!=='J') normal.push({rank:r,suit:s,label:r+s});
-  
-  // 10x10 grid (100 spaces) - exactly fits 96 cards + 4 corners
   for(let y=0;y<10;y++) {
     for(let x=0;x<10;x++) {
       const corner=(x===0||x===9)&&(y===0||y===9);
@@ -50,13 +47,13 @@ function publicState(room, playerId){
    board:room.board, discard:room.discard.at(-1)||null, deadCard:room.deadPile.at(-1)||null,
    deckCount:room.deck.length, discardCount:room.discard.length, deadPileCount:room.deadPile.length,
    turn:room.players[room.turn]?.id||null, deadUsed:room.deadUsed, winner:room.winner, history:room.history.slice(-8), 
-   players:room.players.map(p=>({id:p.id,name:p.name,avatar:p.avatar,color:p.color,connected:p.connected,handCount:p.hand.length,sequences:p.sequences,seat:p.seat})),
+   players:room.players.map(p=>({id:p.id,name:p.name,avatar:p.avatar,color:p.color,connected:p.connected,handCount:p.hand.length,sequences:p.sequences,seat:p.seat,isBot:p.isBot})),
    me:me&&{id:me.id,name:me.name,hand:me.hand,color:me.color,seat:me.seat}
  };
 }
 
-function send(room){ for(const p of room.players){ const res=sse.get(p.id); if(res) res.write(`event: state\ndata: ${JSON.stringify(publicState(room,p.id))}\n\n`); } }
-function startingHand(max){ return max===2?7:(max===3?6:5); }
+function send(room){ for(const p of room.players){ if(p.isBot) continue; const res=sse.get(p.id); if(res) res.write(`event: state\ndata: ${JSON.stringify(publicState(room,p.id))}\n\n`); } }
+function startingHand(){ return 6; } // ALWAYS 6 CARDS AS REQUESTED
 function teamFor(room,p){ return room.mode==='team'?p.seat%2:p.id; }
 
 function linesFrom(room,cell,player){
@@ -66,7 +63,7 @@ function linesFrom(room,cell,player){
      const pts=[]; 
      for(let n=0;n<5;n++){
        let x=cell.x+(offset+n)*dx, y=cell.y+(offset+n)*dy;
-       if(x<0||y<0||x>9||y>9){pts.length=0;break} // 10x10 bounds
+       if(x<0||y<0||x>9||y>9){pts.length=0;break}
        pts.push(room.board[y*10+x]);
      }
      if(pts.length===5 && pts.every(c=>c.corner || (c.chip&&teamFor(room,room.players.find(p=>p.id===c.chip))===team))) out.push(pts);
@@ -75,7 +72,55 @@ function linesFrom(room,cell,player){
  return out;
 }
 
-function finishMove(room,p,card,desc){ p.hand=p.hand.filter(c=>c.id!==card.id); room.discard.push(card); if(!room.deck.length){room.deck=shuffle(room.discard.splice(0));} if(room.deck.length)p.hand.push(room.deck.pop()); room.history.push({text:`${p.name} ${desc}`}); room.deadUsed=false; room.turn=(room.turn+1)%room.players.length; send(room); }
+// AI COMPUTER BOT LOGIC
+function checkBotTurn(room) {
+    if (!room.started || room.winner) return;
+    const bot = room.players[room.turn];
+    if (!bot || !bot.isBot) return;
+
+    setTimeout(() => {
+        let validMoves = [];
+        for(const card of bot.hand) {
+            if(card.jack) {
+                if(card.eye === 'two') {
+                    const spots = room.board.filter(c => !c.corner && !c.chip);
+                    if(spots.length) validMoves.push({card, cell: spots[Math.floor(Math.random()*spots.length)]});
+                } else {
+                    const spots = room.board.filter(c => !c.corner && c.chip && c.chip !== bot.id && !c.locked.length);
+                    if(spots.length) validMoves.push({card, cell: spots[Math.floor(Math.random()*spots.length)]});
+                }
+            } else {
+                const spots = room.board.filter(c => !c.corner && !c.chip && c.rank === card.rank && c.suit === card.suit);
+                if(spots.length) {
+                    validMoves.push({card, cell: spots[Math.floor(Math.random()*spots.length)]});
+                } else {
+                    const fullSpots = room.board.filter(c => !c.corner && c.rank === card.rank && c.suit === card.suit);
+                    if(fullSpots.length > 0 && fullSpots.every(x => x.chip !== null)) {
+                        validMoves.push({card, dead: true}); // It's a dead card
+                    }
+                }
+            }
+        }
+
+        if(validMoves.length > 0) {
+            const move = validMoves[Math.floor(Math.random() * validMoves.length)];
+            try {
+                if(move.dead && !room.deadUsed) {
+                    action(room, bot, {type: 'dead', cardId: move.card.id});
+                    checkBotTurn(room); // Play normal turn after discard
+                } else if (!move.dead) {
+                    action(room, bot, {type: 'play', cardId: move.card.id, x: move.cell.x, y: move.cell.y});
+                }
+            } catch(e) { 
+                room.turn = (room.turn + 1) % room.players.length; send(room); checkBotTurn(room);
+            }
+        } else {
+            room.turn = (room.turn + 1) % room.players.length; send(room); checkBotTurn(room);
+        }
+    }, 2000);
+}
+
+function finishMove(room,p,card,desc){ p.hand=p.hand.filter(c=>c.id!==card.id); room.discard.push(card); if(!room.deck.length){room.deck=shuffle(room.discard.splice(0));} if(room.deck.length)p.hand.push(room.deck.pop()); room.history.push({text:`${p.name} ${desc}`}); room.deadUsed=false; room.turn=(room.turn+1)%room.players.length; send(room); checkBotTurn(room); }
 
 function action(room, player, a){
  if(!room.started||room.winner) throw Error('The game is not currently accepting moves.');
@@ -88,7 +133,7 @@ function action(room, player, a){
    if(spots.length > 0) throw Error('This card still has an open board space. It is not dead.');
    
    player.hand=player.hand.filter(c=>c.id!==card.id);
-   room.deadPile.push(card); // goes specifically to dead pile
+   room.deadPile.push(card); 
    if(room.deck.length) player.hand.push(room.deck.pop());
    
    room.deadUsed=true;
@@ -115,10 +160,24 @@ const server=http.createServer((req,res)=>{
  const url=new URL(req.url,'http://localhost');
  if(req.method==='GET'&&url.pathname==='/events'){const pid=url.searchParams.get('player');res.writeHead(200,{'Content-Type':'text/event-stream','Cache-Control':'no-cache','Connection':'keep-alive'});sse.set(pid,res);req.on('close',()=>sse.delete(pid)); for(const room of rooms.values())if(room.players.some(p=>p.id===pid))send(room);return;}
  if(req.method==='POST'&&url.pathname.startsWith('/api/')){let body='';req.on('data',d=>body+=d);req.on('end',()=>{try{const b=JSON.parse(body||'{}');
-   if(url.pathname==='/api/create'){const room=newRoom(b.mode,b.max);const p={id:id(),name:b.name||'Host',avatar:b.avatar||'🦊',seat:0,color:color(room,0),hand:[],sequences:0,connected:true};room.host=p.id;room.players.push(p);json(res,200,{room:room.code,player:p.id});return;}
-   if(url.pathname==='/api/join'){const room=rooms.get(b.room?.toUpperCase());if(!room)throw Error('Room not found.');if(room.started)throw Error('This game has already started.');if(room.players.length>=room.max)throw Error('This table is full.');const seat=room.players.length;const p={id:id(),name:b.name||`Player ${seat+1}`,avatar:b.avatar||'🦊',seat,color:color(room,seat),hand:[],sequences:0,connected:true};room.players.push(p);send(room);json(res,200,{room:room.code,player:p.id});return;}
+   if(url.pathname==='/api/create'){
+       const isComp = b.mode === 'computer';
+       const room=newRoom(isComp ? 'individual' : b.mode, isComp ? 2 : b.max);
+       const p={id:id(),name:b.name||'Host',avatar:b.avatar||'🦊',seat:0,color:color(room,0),hand:[],sequences:0,connected:true,isBot:false};
+       room.host=p.id;room.players.push(p);
+       if(isComp) {
+           const bot={id:id(),name:'AlphaBot (CPU)',avatar:'🤖',seat:1,color:color(room,1),hand:[],sequences:0,connected:true,isBot:true};
+           room.players.push(bot);
+       }
+       json(res,200,{room:room.code,player:p.id});return;
+   }
+   if(url.pathname==='/api/join'){const room=rooms.get(b.room?.toUpperCase());if(!room)throw Error('Room not found.');if(room.started)throw Error('This game has already started.');if(room.players.length>=room.max)throw Error('This table is full.');const seat=room.players.length;const p={id:id(),name:b.name||`Player ${seat+1}`,avatar:b.avatar||'🦊',seat,color:color(room,seat),hand:[],sequences:0,connected:true,isBot:false};room.players.push(p);send(room);json(res,200,{room:room.code,player:p.id});return;}
    const room=rooms.get(b.room?.toUpperCase());const p=room?.players.find(p=>p.id===b.player);if(!room||!p)throw Error('Your game session is no longer available.');
-   if(url.pathname==='/api/start'){if(room.host!==p.id)throw Error('Only the host can start.');if(room.players.length<2)throw Error('At least two players are needed.');room.started=true;room.players.forEach(q=>{q.hand=[];for(let i=0;i<startingHand(room.max);i++)q.hand.push(room.deck.pop())});room.history.push({text:'The table is set — game started.'});send(room);json(res,200,{ok:true});return;}
+   if(url.pathname==='/api/start'){
+       if(room.host!==p.id)throw Error('Only the host can start.');if(room.players.length<2)throw Error('At least two players are needed.');
+       room.started=true;room.players.forEach(q=>{q.hand=[];for(let i=0;i<startingHand();i++)q.hand.push(room.deck.pop())});
+       room.history.push({text:'The table is set — game started.'});send(room); checkBotTurn(room); json(res,200,{ok:true});return;
+   }
    if(url.pathname==='/api/action'){action(room,p,b.action);json(res,200,{ok:true});return;}
    throw Error('Unknown request.');
  }catch(e){json(res,400,{error:e.message});}});return;}
