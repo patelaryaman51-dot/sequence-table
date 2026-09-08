@@ -41,10 +41,10 @@
 
     .layout-container {
         display: grid;
-        grid-template-columns: 280px 1fr 280px;
+        grid-template-columns: 320px 1fr 320px;
         height: 100vh;
         width: 100vw;
-        padding: 80px 20px 20px 20px; /* Space for top header */
+        padding: 80px 20px 20px 20px; 
         gap: 20px;
     }
 
@@ -113,6 +113,7 @@
     .player-stats { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
     .current-turn-tag { font-size: 10px; font-weight: 800; color: var(--neon-teal); margin-top: 6px; letter-spacing: 0.1em; }
 
+    /* EXACTLY 6 CARDS - NO SCROLLBAR */
     .hand-panel {
         flex-grow: 1;
         background: var(--panel-bg);
@@ -122,17 +123,19 @@
         backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
-        overflow-y: auto;
+        overflow: hidden; 
     }
     .hand-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(3, 1fr);
         gap: 10px;
+        flex-grow: 1;
         margin-top: 10px;
     }
     
     .chat-panel {
-        height: 200px;
+        height: 220px;
         background: var(--panel-bg);
         border: 1px solid var(--panel-border);
         border-radius: 16px;
@@ -153,6 +156,22 @@
     .input-bar { display: flex; gap: 6px; }
     .chat-input { flex-grow: 1; background: rgba(0,0,0,0.6); border: 1px solid var(--panel-border); border-radius: 6px; padding: 8px 10px; color: #fff; outline: none; font-size: 12px; }
 
+    /* NEW DEAD PILE SECTION ON THE RIGHT */
+    .dead-pile-panel {
+        background: var(--panel-bg);
+        border: 1px solid var(--neon-red);
+        border-radius: 16px;
+        padding: 15px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: auto; /* Push to bottom of right column */
+    }
+    .dead-pile-panel:hover { box-shadow: 0 0 15px rgba(229, 62, 62, 0.3); }
+    .dp-title { font-size: 12px; font-weight: 800; color: var(--neon-red); letter-spacing: 0.1em; margin-bottom: 10px; }
+    .dp-box { border: 2px dashed #4a5568; border-radius: 8px; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--text-muted); font-weight: 700; padding: 10px; }
+
     .board-container {
         height: 100%;
         max-height: 85vh;
@@ -162,7 +181,6 @@
         border-radius: 16px;
         box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(79, 209, 197, 0.2);
         display: grid;
-        /* CRITICAL FIX: EXACTLY 10 COLUMNS AND 10 ROWS */
         grid-template-columns: repeat(10, 1fr);
         grid-template-rows: repeat(10, 1fr);
         overflow: hidden;
@@ -195,7 +213,8 @@
     }
 
     .card {
-        width: 100%; aspect-ratio: 2.5/3.5;
+        height: 100%; /* Stretches to fill the 6-grid */
+        width: 100%;
         background: #ffffff;
         color: #0f172a;
         border-radius: 6px;
@@ -209,23 +228,9 @@
         cursor: pointer;
     }
     .card.red { color: var(--neon-red); }
-    .card.selected { transform: translateY(-10px) scale(1.05); border-color: var(--neon-teal); box-shadow: 0 0 20px rgba(79, 209, 197, 0.5); z-index: 5; }
+    .card.selected { transform: translateY(-5px) scale(1.02); border-color: var(--neon-teal); box-shadow: 0 0 20px rgba(79, 209, 197, 0.5); z-index: 5; }
     .card:disabled { opacity: 0.4; filter: grayscale(1); cursor: not-allowed; }
     .card .tag { font: 800 8px var(--font-ui); background: #0f172a; color: #fff; padding: 4px 0; border-radius: 4px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; }
-    
-    .dead-watermark {
-        position: absolute; inset: 0;
-        background: rgba(0,0,0,0.8);
-        border-radius: 4px;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        z-index: 5;
-    }
-    .discard-dead-btn { 
-        background: var(--neon-red); color: #fff; font: 800 10px var(--font-ui); 
-        border: none; padding: 8px 0; width: 90%; border-radius: 4px; 
-        z-index: 10; cursor: pointer; text-align: center;
-    }
-    .discard-dead-btn:hover { background: #c53030; }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); display: grid; place-items: center; z-index: 1000; backdrop-filter: blur(10px); }
     .modal-card { background: var(--panel-bg); border: 1px solid var(--neon-teal); border-radius: 20px; padding: 40px; text-align: center; max-width: 500px; width: 90%; }
@@ -264,9 +269,9 @@
     const avatars = ['👽','🤖','👾','👻','🦊','🐼'];
     let prevSequences = {};
     
-    // EXTERNAL IMAGE URLS - Guarantees they load without needing GitHub uploads!
-    const SHINCHAN_GIF = "https://media.tenor.com/zV8Q8E_98pAAAAAM/shinchan-dance.gif";
-    const MONKEY_GIF = "https://media.tenor.com/4bM_L3V8RwgAAAAi/monkey.gif";
+    // DIRECT INTERNET LINKS FOR GIFS - NO GITHUB UPLOAD NEEDED!
+    const SHINCHAN_GIF = "https://media.tenor.com/zV8Q8E_98pAAAAAC/shinchan-dance.gif";
+    const MONKEY_GIF = "https://media.tenor.com/4bM_L3V8RwgAAAAC/monkey.gif";
     
     function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
     function toast(t) {
@@ -304,12 +309,15 @@
             <div class="modal-card">
                 <h2 style="margin-top:0; font-size:24px; font-weight: 800;">CONFIGURE MATCH</h2>
                 <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 16px;">
-                    <button class="btn-primary" style="margin-top:0; background:${state.mode==='individual'?'var(--neon-teal)':'transparent'}; color:${state.mode==='individual'?'#000':'var(--text-main)'}; border:2px solid var(--neon-teal);" onclick="state.mode='individual'; setup()">INDIVIDUAL</button>
-                    <button class="btn-primary" style="margin-top:0; background:${state.mode==='team'?'var(--neon-teal)':'transparent'}; color:${state.mode==='team'?'#000':'var(--text-main)'}; border:2px solid var(--neon-teal);" onclick="state.mode='team'; setup()">TEAM</button>
+                    <button class="btn-primary" style="margin-top:0; padding:10px; background:${state.mode==='individual'?'var(--neon-teal)':'transparent'}; color:${state.mode==='individual'?'#000':'var(--text-main)'}; border:2px solid var(--neon-teal);" onclick="state.mode='individual'; setup()">INDIVIDUAL</button>
+                    <button class="btn-primary" style="margin-top:0; padding:10px; background:${state.mode==='team'?'var(--neon-teal)':'transparent'}; color:${state.mode==='team'?'#000':'var(--text-main)'}; border:2px solid var(--neon-teal);" onclick="state.mode='team'; setup()">TEAM</button>
+                    <!-- NEW VS COMPUTER BUTTON -->
+                    <button class="btn-primary" style="margin-top:0; padding:10px; background:${state.mode==='computer'?'var(--neon-teal)':'transparent'}; color:${state.mode==='computer'?'#000':'var(--text-main)'}; border:2px solid var(--neon-teal);" onclick="state.mode='computer'; setup()">VS COMPUTER</button>
                 </div>
+                ${state.mode !== 'computer' ? `
                 <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 24px;">
                     ${[2,3,4].map(n=>`<button class="btn-primary" style="margin-top:0; padding: 10px 0; background:${state.max===n?'var(--neon-teal)':'transparent'}; color:${state.max===n?'#000':'var(--text-main)'}; border:2px solid var(--neon-teal);" onclick="state.max=${n}; setup()">${n}P</button>`).join('')}
-                </div>
+                </div>` : '<div style="margin-bottom: 24px; color: var(--text-muted); font-size:12px;">You will play 1v1 against AlphaBot.</div>'}
                 <div style="display: flex; justify-content: center; gap: 15px; font-size: 32px; margin-bottom: 24px;">
                     ${avatars.map(a=>`<span style="cursor:pointer; opacity:${a===state.avatar?1:0.3}; transform:scale(${a===state.avatar?1.2:1}); transition:0.2s;" onclick="state.avatar='${a}'; setup()">${a}</span>`).join('')}
                 </div>
@@ -353,7 +361,7 @@
         state.es.addEventListener('state', e => {
             state.game = JSON.parse(e.data);
             
-            // Check for new sequences to show Shinchan GIF popup
+            // Check for new sequences to show Shinchan GIF
             let newSeqName = null;
             if (state.game && state.game.started) {
                 state.game.players.forEach(p => {
@@ -374,7 +382,6 @@
         document.querySelector('.sequence-alert')?.remove();
         const alert = document.createElement('div');
         alert.className = 'sequence-alert';
-        // External Shinchan GIF URL
         alert.innerHTML = `
             <img src="${SHINCHAN_GIF}" alt="Dancing Shinchan">
             <div class="seq-name">${esc(name)} GOT A SEQUENCE!</div>
@@ -409,10 +416,32 @@
         try { await api('/api/start', { room: state.room, player: state.player }); } catch(e) { toast(e.message); }
     }
 
+    // CHECK IF A CARD IS COMPLETELY BLOCKED ON THE BOARD
     function cardDead(c, g) {
         if(c.jack) return false;
         const spaces = g.board.filter(x => !x.corner && x.rank === c.rank && x.suit === c.suit);
         return spaces.length > 0 && spaces.every(x => x.chip !== null);
+    }
+
+    // NEW DEAD CARD PILE CLICK LOGIC
+    async function discardToDeadPile() {
+        if (!state.selected) {
+            toast("Click a dead card in your hand first!");
+            return;
+        }
+        let c = state.game.me.hand.find(x => x.id === state.selected);
+        if (!c) return;
+        
+        if (!cardDead(c, state.game)) {
+            toast("That card is not dead! There are open spaces for it.");
+            return;
+        }
+
+        try {
+            await api('/api/action', { room: state.room, player: state.player, action: { type: 'dead', cardId: c.id } });
+            state.selected = null;
+            toast("Dead card exchanged! Make your normal move.");
+        } catch(e) { toast(e.message); }
     }
 
     function sendChat() {
@@ -456,22 +485,14 @@
         <div class="layout-container">
             <div class="left-col">
                 <div class="hand-panel">
-                    <div style="width: 100%; font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 10px;">YOUR HAND (${me.hand.length})</div>
+                    <div style="width: 100%; font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.1em;">YOUR HAND</div>
                     <div class="hand-grid">
                         ${me.hand.map(c => {
-                            let isDead = cardDead(c, g);
                             let isRed = ['♥','♦'].includes(c.suit);
                             return `
-                            <div class="card ${isRed ? 'red' : ''} ${state.selected === c.id ? 'selected' : ''}" onclick="select('${c.id}')" ${!mine && !isDead ? 'disabled' : ''}>
+                            <div class="card ${isRed ? 'red' : ''} ${state.selected === c.id ? 'selected' : ''}" onclick="select('${c.id}')" ${!mine ? 'disabled' : ''}>
                                 <div style="line-height:1; text-align:left;">${c.label}</div>
                                 ${c.eye ? `<div class="tag">${c.eye==='two'?'WILD':'REMOVE'}</div>` : ''}
-                                
-                                ${isDead ? `
-                                    <div class="dead-watermark">
-                                        <button class="discard-dead-btn" onclick="discardDead('${c.id}', event)">DISCARD DEAD</button>
-                                    </div>
-                                ` : ''}
-                                
                                 <div style="line-height:1; align-self:flex-end; transform:rotate(180deg);">${c.label}</div>
                             </div>
                         `;}).join('')}
@@ -523,6 +544,14 @@
                         </div>
                     `;}).join('')}
                 </div>
+
+                <!-- DEAD CARD PILE SECTION -->
+                <div class="dead-pile-panel" onclick="discardToDeadPile()">
+                    <div class="dp-title">DEAD CARD PILE</div>
+                    <div class="dp-box">
+                        CLICK TO DISCARD<br>SELECTED DEAD CARD
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -530,7 +559,7 @@
         <div class="modal-overlay">
             <div class="modal-card">
                 <div style="font-size: 12px; color: var(--neon-teal); font-weight: 800; letter-spacing: 0.2em; margin-bottom: 20px;">MATCH CONCLUDED</div>
-                <!-- External Monkey GIF URL -->
+                <!-- NOBI MONKEY GIF LOADED FROM INTERNET -->
                 <img src="${MONKEY_GIF}" style="width:250px; border-radius:12px; margin: 0 auto 20px; display:block; border: 3px solid var(--neon-teal); box-shadow: 0 10px 30px rgba(0,0,0,0.5);" alt="Victory Monkey">
                 <h1 style="font-size: 40px; margin: 0 0 15px 0; font-family: var(--font-mono); color: #fff;">${esc(g.winner.name)} WINS!</h1>
                 <button class="btn-primary" onclick="home()">NEW MATCH</button>
@@ -543,14 +572,6 @@
         if (state.selected === cardId) { state.selected = null; game(); return; }
         state.selected = cardId;
         game();
-    }
-    
-    async function discardDead(cardId, event) {
-        if (event) event.stopPropagation();
-        try {
-            await api('/api/action', { room: state.room, player: state.player, action: { type: 'dead', cardId } });
-            state.selected = null;
-        } catch(e) { toast(e.message); }
     }
     
     async function cell(x, y) {
