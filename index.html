@@ -2,142 +2,441 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Sequence Table</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Sequence - Sci-Fi Edition</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Mono&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@500;600;700&display=swap');
-    *{box-sizing:border-box}body{margin:0;background:#20140e;color:#f8efdc;font-family:Inter,system-ui,sans-serif;min-width:320px}button,input,select{font:inherit}button{cursor:pointer}.wood{min-height:100vh;padding:28px;background:repeating-linear-gradient(105deg,#2c170f 0 5px,#351c11 6px 11px,#24130d 12px 18px);position:relative}.wood:before{content:"";inset:0;position:fixed;pointer-events:none;opacity:.22;background:radial-gradient(ellipse at center,transparent 30%,#050301 100%)}.hero,.setup,.lobby{max-width:920px;margin:8vh auto;text-align:center}.eyebrow{font:600 11px 'DM Mono';letter-spacing:.18em;color:#d2a758}.title{font:700 clamp(58px,12vw,140px) Fraunces,serif;margin:10px 0;letter-spacing:-.08em;text-shadow:0 4px 0 #3c210e,0 15px 30px #000}.subtitle{font:600 19px Fraunces,serif;color:#d8c7ac}.hero-board{height:245px;margin:48px auto 26px;max-width:690px;border:16px solid #77431f;border-radius:12px;box-shadow:0 12px 0 #321807,0 26px 45px #000;background:repeating-linear-gradient(90deg,transparent 0 53px,#d4bc8a 54px 55px),repeating-linear-gradient(0deg,transparent 0 42px,#d4bc8a 43px 44px),#176644;transform:perspective(700px) rotateX(9deg)}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.btn{border:1px solid #e9c879;background:#e5c074;color:#301b10;padding:13px 21px;border-radius:5px;font-weight:700;letter-spacing:.06em;box-shadow:0 3px 0 #8d642f;transition:.18s}.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}.btn.dark{background:#2c1b11;color:#faefd7;border-color:#936c42}.panel{background:#223e2d;border:10px solid #76431e;box-shadow:0 7px 0 #311906,0 20px 40px #0009;border-radius:9px;padding:28px}.choices{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:28px 0}.choice{min-width:190px;padding:25px;border:1px solid #b58c50;border-radius:8px;background:#f5e9d0;color:#302116;font-family:Fraunces;font-size:23px}.choice.selected{outline:4px solid #e0b864;background:#fff7e8}.form-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.form-row input{padding:14px;border:0;border-radius:5px;min-width:230px}.avatar-picker{font-size:28px;letter-spacing:5px;margin:17px}.avatar-picker span{cursor:pointer}.lobby-code{font:700 42px 'DM Mono';letter-spacing:.13em;color:#e2ba62}.seats{max-width:520px;margin:22px auto;text-align:left}.seat{padding:12px 15px;background:#183222;margin:7px;border-radius:5px;border-left:5px solid var(--c)}.game{min-height:100vh;display:grid;grid-template-columns:190px minmax(620px,1fr) 210px;gap:17px;padding:18px;align-items:center}.players{display:grid;gap:10px}.player{background:#251911;border:1px solid #805d35;border-radius:7px;padding:11px;font-size:12px;box-shadow:0 5px 11px #0007}.player.active{outline:2px solid #e4bd65;transform:translateY(-2px)}.player strong{display:block;font-size:14px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:6px}.center{display:flex;flex-direction:column;align-items:center;gap:14px}.turn{font:700 13px 'DM Mono';letter-spacing:.1em;color:#e9c97e}
-    .board{width:min(76vw,780px);aspect-ratio:1;display:grid;grid-template-columns:repeat(10,1fr);border:15px solid #7b4823;border-radius:8px;overflow:hidden;box-shadow:0 8px 0 #351807,0 25px 40px #000; background:#e5d2a5}
-    .cell{position:relative;display:grid;place-items:center;min-width:0;border-right:1px solid #9b835d;border-bottom:1px solid #9b835d;background:#ebddbc;color:#261a15;font:700 clamp(7px,1.1vw,13px) 'DM Mono'}.cell:nth-child(odd){background:#e4d1a8}.cell.free{background:#346546;color:#f0e4bd;font-size:8px}.cell.legal{box-shadow:inset 0 0 0 3px #e0b85e;cursor:pointer}.cell.locked{background:#e8ca87}.chip{width:78%;height:78%;border-radius:50%;background:radial-gradient(circle at 32% 27%,#fff8,transparent 15%),var(--c);border:2px solid #ffffff80;box-shadow:inset 0 -4px 2px #0004,0 3px 3px #0007;animation:land .26s ease-out}.side{background:#21160f;border:1px solid #76532c;border-radius:8px;padding:14px;font-size:12px}.stack{width:82px;height:110px;margin:10px auto;background:repeating-linear-gradient(135deg,#4b2d1e 0 4px,#c5a574 5px 8px);border:3px solid #d4b571;border-radius:6px;box-shadow:4px 4px 0 #110b07}.discard{background:#f6ead0;color:#351e14;display:grid;place-items:center;font:700 21px Fraunces}.history{max-height:155px;overflow:auto;color:#d4c2a2}.history p{margin:8px 0}.hand-area{grid-column:1/-1;display:flex;justify-content:center;min-height:145px;padding-top:3px}.hand{display:flex;align-items:end;padding:0 15px;overflow:auto;max-width:100%}
-    .card{width:86px;height:122px;flex:0 0 86px;margin:0 -5px 0 0;border-radius:7px;background:#fbf1dc;color:#2d1a15;border:1px solid #c8ad7b;box-shadow:0 6px 10px #0008;padding:8px;font:700 17px 'DM Mono';display:flex;justify-content:space-between;flex-direction:column;transition:.18s; position: relative;}
-    .card.red{color:#b83d35}.card.selected{transform:translateY(-17px);outline:3px solid #e2b85d}
-    .card .tag{font:600 8px Inter;background:#634327;color:#fff1cf;padding:3px;border-radius:3px;text-align:center}
-    .discard-btn{background:#d45a4f!important;color:#fff!important;cursor:pointer;border:none;pointer-events:auto;transition:.18s;z-index:2;position:relative}.discard-btn:hover{filter:brightness(1.2)}.note{font-size:11px;color:#cdbd9c}
-    .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1c2d20;color:#fff;padding:10px 16px;border-radius:5px;box-shadow:0 4px 15px #000}.victory{position:fixed;inset:0;background:#120b08c9;display:grid;place-items:center;z-index:4}.victory .panel{max-width:480px;text-align:center}.victory h1{font:700 64px Fraunces;margin:0;color:#e6bd5e}@keyframes land{0%{transform:scale(1.8) rotate(15deg);opacity:.2}100%{transform:scale(1)}}@media(max-width:950px){.game{grid-template-columns:1fr;padding:10px}.players{grid-template-columns:repeat(2,1fr);order:1}.center{order:2}.side{display:grid;grid-template-columns:1fr 1fr;gap:10px;order:3}.hand-area{order:4}.board{width:min(95vw,730px)}.stack{width:55px;height:74px}.history{display:none}}@media(max-width:560px){.wood{padding:15px}.hero-board{height:160px}.game{gap:9px}.card{width:68px;height:96px;flex-basis:68px;font-size:14px}.player{padding:8px}.board{border-width:8px}.cell{font-size:7px}}
-    @media(min-width:951px){
-      body{background:#071d15!important}
-      .wood{padding:20px 8vw 150px!important;background:radial-gradient(circle at 50% 0,#123a29 0,#071d15 48%,#04130d 100%)!important}
-      .game{grid-template-columns:minmax(680px,1fr) 310px!important;grid-template-rows:minmax(620px,1fr) auto!important;gap:18px!important;max-width:1280px!important;margin:auto!important;align-items:stretch!important}
-      .center{grid-column:1!important;grid-row:1!important;justify-content:center!important;position:relative!important;padding-top:56px!important}
-      .turn{position:absolute!important;top:0!important;left:0!important;right:0!important;min-height:45px!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;padding:0 16px!important;background:#0b281d!important;border:1px solid #9f7f34!important;border-radius:9px!important;color:#f2d982!important}
-      .turn:before{content:'SEQUENCE · DIGITAL TABLETOP EDITION'!important;margin-right:auto!important;font:700 17px Fraunces,serif!important;color:#faeed2!important}
-      .board{width:min(100%,760px)!important;border:13px solid #563418!important;border-radius:17px!important;box-shadow:0 0 0 3px #b89035,0 16px 33px #000b!important}
-      .cell{font-size:clamp(9px,1vw,14px)!important;border-color:#506847!important;background:#f5efd9!important}
-      .cell:nth-child(odd){background:#fcf7e9!important}
-      .cell.free{background:linear-gradient(145deg,#161d13,#6a421e)!important;color:#f7dc85!important;font-size:10px!important}
-      .players{grid-column:2!important;grid-row:1!important;align-self:start!important;background:#0b281d!important;border:1px solid #7d6834!important;padding:12px!important;border-radius:9px!important;gap:8px!important}
-      .players:before{content:'PLAYERS'!important;font:700 12px 'DM Mono'!important;letter-spacing:.12em!important;color:#e9d89d!important}
-      .player{background:#0a1e16!important;border-color:#294d39!important;box-shadow:none!important;padding:10px!important}
-      .side{grid-column:2!important;grid-row:1!important;align-self:end!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;background:#0b281d!important;border-color:#7d6834!important;padding:12px!important}
-      .side .history{display:none!important}
-      .hand-area{grid-column:1/-1!important;grid-row:2!important;min-height:132px!important;margin:0 -8vw -150px!important;padding:15px 7vw 10px!important;background:linear-gradient(90deg,#061b12,#173c2b 50%,#061b12)!important;border-top:1px solid #968141!important}
-      .hand:before{content:'YOUR HAND'!important;align-self:flex-start!important;margin:4px 24px 0 0!important;font:700 14px Fraunces,serif!important;color:#f0dc9d!important;white-space:nowrap!important}
-      .card{width:78px!important;height:108px!important;flex-basis:78px!important;margin-right:7px!important}
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+    
+    :root {
+        --bg-deep: #030705;
+        --bg-panel: rgba(7, 18, 12, 0.85);
+        --border-color: #103320;
+        --neon-green: #00ff9d;
+        --neon-green-dim: rgba(0, 255, 157, 0.2);
+        --neon-red: #ff3333;
+        --text-main: #d3efe0;
+        --text-dim: #6b8f7d;
+        --font-ui: 'Rajdhani', sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+    }
+    
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg-deep); color: var(--text-main); font-family: 'Inter', sans-serif; overflow: hidden; user-select: none; min-width: 320px; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    
+    .scifi-bg { width: 100vw; height: 100vh; background: radial-gradient(circle at center, #05130a 0%, var(--bg-deep) 100%); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .scifi-bg::before { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px); background-size: 30px 30px; pointer-events: none; z-index: 0; }
+    
+    .menu-panel { position: relative; z-index: 10; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 40px; text-align: center; max-width: 800px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), inset 0 0 20px var(--neon-green-dim); backdrop-filter: blur(10px); }
+    .eyebrow { font: 600 13px var(--font-mono); letter-spacing: 0.2em; color: var(--neon-green); margin-bottom: 10px; text-transform: uppercase; }
+    .title { font: 700 clamp(40px, 8vw, 90px) var(--font-ui); margin: 0 0 10px 0; letter-spacing: 0.05em; color: #fff; text-shadow: 0 0 15px var(--neon-green); }
+    .subtitle { font: 500 18px var(--font-ui); color: var(--text-dim); margin-bottom: 30px; }
+    
+    .actions { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+    .btn { background: rgba(0, 255, 157, 0.1); border: 1px solid var(--neon-green); color: var(--neon-green); padding: 12px 24px; border-radius: 4px; font: 600 16px var(--font-ui); letter-spacing: 0.1em; transition: 0.2s; text-transform: uppercase; }
+    .btn:hover { background: var(--neon-green); color: var(--bg-deep); box-shadow: 0 0 15px var(--neon-green); transform: translateY(-2px); }
+    .btn.dark { background: transparent; border-color: var(--text-dim); color: var(--text-main); }
+    .btn.dark:hover { border-color: #fff; color: #fff; box-shadow: none; }
+    
+    .choices { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px 0; }
+    .choice { min-width: 160px; padding: 20px; border: 1px solid var(--border-color); border-radius: 6px; background: rgba(0,0,0,0.5); color: var(--text-dim); font: 600 20px var(--font-ui); transition: 0.2s; }
+    .choice.selected { border-color: var(--neon-green); color: var(--neon-green); background: rgba(0, 255, 157, 0.05); box-shadow: inset 0 0 10px var(--neon-green-dim); }
+    
+    .form-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .form-row input { padding: 12px 16px; border: 1px solid var(--border-color); background: #020403; color: #fff; border-radius: 4px; font-family: var(--font-mono); outline: none; }
+    .form-row input:focus { border-color: var(--neon-green); box-shadow: 0 0 8px var(--neon-green-dim); }
+    
+    .avatar-picker { font-size: 32px; margin: 25px 0; display: flex; justify-content: center; gap: 10px; }
+    .avatar-picker span { cursor: pointer; transition: 0.2s; filter: grayscale(100%); opacity: 0.4; }
+    .avatar-picker span.selected { filter: grayscale(0%); opacity: 1; transform: scale(1.2); }
+    
+    .lobby-code { font: 700 54px var(--font-mono); letter-spacing: 0.15em; color: #fff; text-shadow: 0 0 20px var(--neon-green); margin: 20px 0; }
+    .seats { max-width: 600px; margin: 30px auto; text-align: left; display: grid; gap: 10px; }
+    .seat { padding: 15px 20px; background: rgba(0,0,0,0.6); border: 1px solid var(--border-color); border-left: 4px solid var(--c); border-radius: 4px; font-family: var(--font-mono); display: flex; align-items: center; gap: 15px; }
+
+    .hud-panel { position: absolute; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 5px 20px rgba(0,0,0,0.8); backdrop-filter: blur(8px); padding: 15px; z-index: 10; }
+    
+    /* Top Right: Turn Indicator */
+    .turn-hud { top: 25px; right: 25px; display: flex; align-items: center; gap: 12px; font: 700 16px var(--font-ui); letter-spacing: 0.1em; color: var(--text-dim); transition: 0.3s; border-right: 3px solid transparent; }
+    .turn-hud.active { color: var(--neon-green); border-color: var(--neon-green); background: rgba(0, 255, 157, 0.05); box-shadow: 0 0 15px var(--neon-green-dim); }
+    .speaker-icon { font-size: 18px; }
+    
+    /* Right Edge: Stats & Dead Pile */
+    .right-hud { right: 25px; top: 50%; transform: translateY(-50%); width: 240px; display: flex; flex-direction: column; gap: 20px; }
+    .player-stat { background: rgba(0,0,0,0.5); border: 1px solid #112217; padding: 12px; border-radius: 4px; font-size: 13px; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+    .player-stat.active { border-color: var(--neon-green); background: rgba(0, 255, 157, 0.05); }
+    .player-stat .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
+    
+    .dead-pile { text-align: center; padding: 20px 10px; background: rgba(0,0,0,0.7); border: 1px dashed var(--border-color); border-radius: 6px; }
+    .stack { width: 70px; height: 100px; margin: 10px auto; background: repeating-linear-gradient(45deg, #0a110d 0 5px, #050a07 6px 10px); border: 1px solid #1a3324; border-radius: 4px; box-shadow: 2px 2px 0 rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; font: 700 24px var(--font-ui); color: #446655; }
+    .stack.discard { background: #0e1812; color: var(--text-main); border-color: var(--border-color); }
+
+    /* Bottom Left: Chat Box */
+    .chat-hud { bottom: 25px; left: 25px; width: 280px; display: flex; flex-direction: column; gap: 10px; }
+    .chat-log { height: 120px; overflow-y: auto; font-size: 12px; color: var(--text-dim); display: flex; flex-direction: column; justify-content: flex-end; }
+    .chat-controls { display: flex; gap: 8px; align-items: center; background: rgba(0,0,0,0.6); padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); }
+    .chat-input { background: transparent; border: none; color: #fff; outline: none; width: 100%; font-size: 13px; }
+    .chat-btn { background: transparent; border: none; color: var(--text-dim); cursor: pointer; transition: 0.2s; font-size: 16px; padding: 2px; }
+    .chat-btn:hover { color: var(--neon-green); transform: scale(1.1); }
+
+    .board-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5; display: flex; flex-direction: column; align-items: center; }
+    .board { width: min(65vh, 65vw); max-width: 800px; aspect-ratio: 1; display: grid; grid-template-columns: repeat(10, 1fr); border: 2px solid var(--neon-green); border-radius: 6px; background: #000; box-shadow: 0 0 40px rgba(0, 255, 157, 0.15), inset 0 0 20px rgba(0,0,0,0.8); overflow: hidden; }
+    .cell { position: relative; display: grid; place-items: center; border-right: 1px solid #112217; border-bottom: 1px solid #112217; background: #080f0b; color: #3a5c48; font: 700 clamp(8px, 1.2vw, 16px) var(--font-mono); transition: 0.2s; }
+    .cell:nth-child(odd) { background: #050a07; }
+    .cell.free { background: #021a0f; color: var(--neon-green); font-size: clamp(6px, 1vw, 12px); font-family: var(--font-ui); letter-spacing: 0.1em; }
+    
+    /* Hover/Playable indicator - Subdued for clean visibility */
+    .cell.legal:hover { background: rgba(0, 255, 157, 0.1); cursor: pointer; box-shadow: inset 0 0 0 1px var(--neon-green); color: var(--neon-green); }
+    
+    /* Neon Chips */
+    .chip { width: 75%; height: 75%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff 0%, var(--c) 40%, #000 100%); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 0 12px var(--c), inset 0 -2px 5px rgba(0,0,0,0.6); animation: scanline 0.3s ease-out; }
+    @keyframes scanline { 0% { transform: scale(1.5); opacity: 0; filter: brightness(2); } 100% { transform: scale(1); opacity: 1; filter: brightness(1); } }
+
+    .hand-container { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 15; padding-bottom: 15px; }
+    .hand { display: flex; gap: 10px; justify-content: center; }
+    .card { width: clamp(70px, 8vw, 100px); height: clamp(100px, 11vw, 140px); background: #0b140f; border: 1px solid #1a3324; border-radius: 6px; box-shadow: 0 10px 20px rgba(0,0,0,0.8); display: flex; flex-direction: column; justify-content: space-between; padding: 8px; font: 700 clamp(14px, 1.5vw, 20px) var(--font-mono); color: #a3c4b3; transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; user-select: none; }
+    .card.red { color: #ff4d4d; }
+    
+    .card:hover:not(:disabled) { transform: translateY(-10px); background: #111d16; border-color: #2a4d36; }
+    .card.selected { transform: translateY(-20px); border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green-dim); background: #0a1f14; color: #fff; }
+    .card:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .card .corner-val { line-height: 1; }
+    .card .corner-val.bottom { align-self: flex-end; transform: rotate(180deg); }
+    
+    /* Dead Card Button overlay */
+    .tag { font: 600 10px var(--font-ui); background: rgba(0,0,0,0.8); color: var(--neon-green); padding: 4px; border-radius: 3px; text-align: center; letter-spacing: 0.05em; border: 1px solid #1a3324; }
+    .discard-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; background: var(--neon-red); color: #fff; border: 1px solid #ffaaaa; padding: 6px 0; font: 700 12px var(--font-ui); border-radius: 4px; cursor: pointer; box-shadow: 0 0 15px rgba(255, 51, 51, 0.6); z-index: 20; text-shadow: 0 1px 2px rgba(0,0,0,0.5); transition: 0.15s; }
+    .discard-btn:hover { background: #ff4d4d; transform: translate(-50%, -50%) scale(1.05); }
+
+    .toast { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); background: var(--bg-panel); color: #fff; padding: 12px 24px; border-radius: 4px; border: 1px solid var(--border-color); box-shadow: 0 5px 25px rgba(0,0,0,0.9); z-index: 100; font: 500 14px var(--font-ui); letter-spacing: 0.05em; }
+    .victory-overlay { position: fixed; inset: 0; background: rgba(2, 6, 4, 0.9); z-index: 1000; display: grid; place-items: center; backdrop-filter: blur(10px); }
+    
+    @media (max-width: 1100px) {
+        .right-hud, .chat-hud, .turn-hud { transform: scale(0.85); transform-origin: center right; }
+        .chat-hud { transform-origin: bottom left; }
+        .board { width: min(55vh, 75vw); }
+    }
+    @media (max-width: 768px) {
+        .scifi-bg { display: block; overflow-y: auto; padding-top: 60px; }
+        .board-container { position: relative; top: auto; left: auto; transform: none; padding: 20px; }
+        .board { width: 100%; max-width: 90vw; margin: auto; }
+        .right-hud, .chat-hud { position: relative; inset: auto; width: 100%; transform: none; flex-direction: row; flex-wrap: wrap; justify-content: center; margin: 10px 0; padding: 10px; }
+        .chat-hud { display: none; /* Hide chat on mobile to save space */ }
+        .hand-container { position: fixed; background: linear-gradient(0deg, var(--bg-deep) 70%, transparent); width: 100%; padding: 15px 10px 5px; }
+        .dead-pile { display: none; }
     }
   </style>
 </head>
 <body>
   <div id="app"></div>
+
   <script>
-    const app=document.querySelector('#app');
-    const shareOrigin=location.hostname==='localhost'?'http://192.168.1.128:3100':location.origin;
-    let state={screen:'home',mode:'individual',max:4,name:'',avatar:'🦊',room:null,player:null,game:null,selected:null};
-    const avatars=['🦊','🐼','🐯','🦉','🐸','🦁'];
+    const app = document.querySelector('#app');
+    const shareOrigin = location.hostname === 'localhost' ? 'http://192.168.1.128:3100' : location.origin;
+    let state = { screen: 'home', mode: 'individual', max: 4, name: '', avatar: '🦊', room: null, player: null, game: null, selected: null };
+    const avatars = ['🦊','🐼','🐯','🦉','🐸','🦁','🤖','👽'];
     
-    function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-    function toast(t){document.querySelector('.toast')?.remove();let d=document.createElement('div');d.className='toast';d.textContent=t;document.body.append(d);setTimeout(()=>d.remove(),2600)}
-    async function api(url,data){let r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}),j=await r.json();if(!r.ok)throw Error(j.error);return j}
+    function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
     
-    function home(){app.innerHTML=`<main class="wood"><section class="hero"><div class="eyebrow">A MODERN TABLETOP CLASSIC</div><h1 class="title">SEQUENCE</h1><p class="subtitle">Classic Strategy. New Digital Experience.</p><div class="hero-board"></div><div class="actions"><button class="btn" onclick="setup()">PLAY</button><button class="btn dark" onclick="howto()">HOW TO PLAY</button><button class="btn dark" onclick="join()">JOIN GAME</button><button class="btn" onclick="setup()">CREATE GAME</button></div></section></main>`}
-    function setup(){state.screen='setup';app.innerHTML=`<main class="wood"><section class="setup panel"><div class="eyebrow">SET THE TABLE</div><h2 class="subtitle">Choose your match</h2><div class="choices"><button class="choice ${state.mode==='individual'?'selected':''}" onclick="state.mode='individual';setup()">INDIVIDUAL</button><button class="choice ${state.mode==='team'?'selected':''}" onclick="state.mode='team';setup()">TEAM PLAY</button></div><div class="choices">${[2,3,4].map(n=>`<button class="choice ${state.max===n?'selected':''}" onclick="state.max=${n};setup()">${n} PLAYERS${n===4?'<small><br>RECOMMENDED</small>':''}</button>`).join('')}</div><div class="form-row"><input id="name" placeholder="Your name" value="${esc(state.name)}"><button class="btn" onclick="createGame()">CREATE ROOM</button></div><div class="avatar-picker">${avatars.map(a=>`<span onclick="state.avatar='${a}';setup()" style="opacity:${a===state.avatar?1:.35}">${a}</span>`).join('')}</div><button class="btn dark" onclick="home()">BACK</button></section></main>`}
-    async function createGame(){state.name=document.querySelector('#name').value.trim()||'Host';try{let x=await api('/api/create',{mode:state.mode,max:state.max,name:state.name,avatar:state.avatar});state.room=x.room;state.player=x.player;lobby();connect()}catch(e){toast(e.message)}}
-    function join(){app.innerHTML=`<main class="wood"><section class="setup panel"><h2 class="subtitle">Join a game room</h2><div class="form-row"><input id="code" placeholder="ROOM CODE"><input id="name" placeholder="Your name"><button class="btn" onclick="joinGame()">JOIN TABLE</button></div><div class="avatar-picker">${avatars.map(a=>`<span onclick="state.avatar='${a}';join()" style="opacity:${a===state.avatar?1:.35}">${a}</span>`).join('')}</div><button class="btn dark" onclick="home()">BACK</button></section></main>`}
-    async function joinGame(){try{let x=await api('/api/join',{room:document.querySelector('#code').value,name:document.querySelector('#name').value||'Guest',avatar:state.avatar});state.room=x.room;state.player=x.player;lobby();connect()}catch(e){toast(e.message)}}
+    function toast(t) {
+        document.querySelector('.toast')?.remove();
+        let d = document.createElement('div');
+        d.className = 'toast';
+        d.innerHTML = `⚠️ ${esc(t)}`;
+        document.body.append(d);
+        setTimeout(() => d.remove(), 3000);
+    }
     
-    function connect(){state.es?.close();state.es=new EventSource(`/events?player=${state.player}`);state.es.addEventListener('state',e=>{state.game=JSON.parse(e.data); if(state.game.started)game();else lobby()})}
-    function lobby(){let g=state.game||{code:state.room,players:[],max:state.max,host:state.player};app.innerHTML=`<main class="wood"><section class="lobby panel"><div class="eyebrow">SEQUENCE TABLE</div><div class="lobby-code">${g.code}</div><p class="note">Share this room code, or copy the invite link.</p><div class="actions"><button class="btn dark" onclick="navigator.clipboard.writeText(shareOrigin+'/?room=${g.code}');toast('Invite link copied')">COPY INVITE LINK</button><button class="btn dark" onclick="navigator.clipboard.writeText('${g.code}');toast('Room code copied')">COPY CODE</button>${g.host===state.player?'<button class="btn" onclick="start()">START GAME</button>':''}</div><div class="seats">${Array.from({length:g.max},(_,i)=>{let p=g.players.find(q=>q.seat===i);return `<div class="seat" style="--c:${p?.color||'#6c6c6c'}">${p?`${p.avatar||'🦊'} <strong>${esc(p.name)}</strong> — Ready${p.id===g.host?' · HOST':''}`:`Seat ${i+1} — Waiting for player…`}</div>`}).join('')}</div><button class="btn dark" onclick="home()">LEAVE TABLE</button></section></main>`}
-    
-    async function start(){try{await api('/api/start',{room:state.room,player:state.player})}catch(e){toast(e.message)}}
-    
-    function cardDead(c,g){return !c.jack&&!g.board.some(x=>!x.corner&&!x.chip&&x.rank===c.rank&&x.suit===c.suit)}
-    
-    function game(){
-        let g=state.game,me=g.me;if(!me)return;
-        let mine=g.turn===me.id;
-        let selected=me.hand.find(c=>c.id===state.selected);
-        
-        let legal=c=>{
-            if(!selected||!mine)return false;
-            if(selected.eye==='two')return !c.chip&&!c.corner;
-            if(selected.eye==='one')return !!c.chip&&!c.locked.length&&c.chip!==me.id;
-            return !c.chip&&!c.corner&&c.rank===selected.rank&&c.suit===selected.suit
-        };
-        
-        app.innerHTML=`<main class="wood">
-            <section class="game">
-                <aside class="players">
-                    ${g.players.map(p=>`<div class="player ${g.turn===p.id?'active':''}" style="--c:${p.color}"><span class="dot"></span><strong>${p.avatar||'🦊'} ${esc(p.name)}</strong>${p.handCount} cards · ${p.sequences} sequence${p.sequences===1?'':'s'}${g.turn===p.id?'<div class="note">CURRENT TURN</div>':''}</div>`).join('')}
-                </aside>
-                <div class="center">
-                    <div class="turn">${mine?'YOUR TURN':`CURRENT TURN · ${esc(g.players.find(p=>p.id===g.turn)?.name||'')}`}${selected?` · ${selected.eye==='two'?'WILD — choose any space':selected.eye==='one'?'REMOVE OPPONENT CHIP':'CARD SELECTED'}`:''}</div>
-                    <div class="board">
-                        ${g.board.map(c=>`<div class="cell ${c.corner?'free':''} ${legal(c)?'legal':''} ${c.locked.length?'locked':''}" onclick="cell(${c.x},${c.y})">${c.chip?`<i class="chip" style="--c:${g.players.find(p=>p.id===c.chip)?.color}"></i>`:c.label||''}</div>`).join('')}
-                    </div>
-                </div>
-                <aside class="side">
-                    <div><div class="eyebrow">DRAW DECK</div><div class="stack"></div><div>${g.deckCount} cards remaining</div></div>
-                    <div><div class="eyebrow">DISCARD PILE</div><div class="stack discard">${g.discard?.label||'—'}</div></div>
-                    <div class="history"><div class="eyebrow">MOVE HISTORY</div>${g.history.map(h=>`<p>${esc(h.text)}</p>`).join('')}</div>
-                </aside>
-                <div class="hand-area">
-                    <div class="hand">
-                        ${me.hand.map(c=>`
-                            <div class="card ${['♥','♦'].includes(c.suit)?'red':''} ${state.selected===c.id?'selected':''}" onclick="select('${c.id}')" style="cursor:pointer; ${!mine?'opacity:0.55;pointer-events:none':''} ">
-                                <span>${c.label}</span>
-                                ${c.eye?`<span class="tag">${c.eye==='two'?'WILD JACK':'REMOVE JACK'}</span>`:cardDead(c,g)?`<button class="tag discard-btn" onclick="discardDead('${c.id}', event)">DISCARD DEAD</button>`:''}
-                                <span style="align-self:end">${c.label}</span>
-                            </div>
-                        `).join('')}
-                    </div>
+    async function api(url, data) {
+        let r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        let j = await r.json();
+        if (!r.ok) throw Error(j.error);
+        return j;
+    }
+
+    function home() {
+        app.innerHTML = `
+        <main class="scifi-bg">
+            <section class="menu-panel">
+                <div class="eyebrow">DIGITAL MULTIPLAYER TABLETOP</div>
+                <h1 class="title">SEQUENCE</h1>
+                <p class="subtitle">System connection established. Awaiting pilot input.</p>
+                <div class="actions">
+                    <button class="btn" onclick="setup()">INITIALIZE GAME</button>
+                    <button class="btn dark" onclick="join()">JOIN SERVER</button>
+                    <button class="btn dark" onclick="howto()">DATABANK (RULES)</button>
                 </div>
             </section>
-            ${g.winner?`<div class="victory"><section class="panel"><div class="eyebrow">A WINNING LINE</div><h1>SEQUENCE!</h1><p class="subtitle">${esc(g.winner.name)} WINS</p><div class="actions"><button class="btn" onclick="home()">NEW GAME</button><button class="btn dark" onclick="lobby()">RETURN TO LOBBY</button></div></section></div>`:''}
-        </main>`
+        </main>`;
     }
     
-    function select(cardId){
-        let c=state.game.me.hand.find(x=>x.id===cardId);
-        if(state.selected===cardId){state.selected=null;game();return}
-        state.selected=cardId;game();
+    function setup() {
+        state.screen = 'setup';
+        app.innerHTML = `
+        <main class="scifi-bg">
+            <section class="menu-panel">
+                <div class="eyebrow">CONFIGURE MATCH PARAMETERS</div>
+                <h2 class="subtitle">Select combat mode</h2>
+                <div class="choices">
+                    <button class="choice ${state.mode==='individual'?'selected':''}" onclick="state.mode='individual';setup()">INDIVIDUAL</button>
+                    <button class="choice ${state.mode==='team'?'selected':''}" onclick="state.mode='team';setup()">SQUAD (TEAM)</button>
+                </div>
+                <div class="choices">
+                    ${[2,3,4].map(n=>`<button class="choice ${state.max===n?'selected':''}" onclick="state.max=${n};setup()">${n} PLAYERS</button>`).join('')}
+                </div>
+                <div class="avatar-picker">
+                    ${avatars.map(a=>`<span class="${a===state.avatar?'selected':''}" onclick="state.avatar='${a}';setup()">${a}</span>`).join('')}
+                </div>
+                <div class="form-row">
+                    <input id="name" placeholder="Enter Callsign" value="${esc(state.name)}">
+                    <button class="btn" onclick="createGame()">LAUNCH SERVER</button>
+                </div>
+                <div class="actions"><button class="btn dark" style="margin-top:20px" onclick="home()">ABORT</button></div>
+            </section>
+        </main>`;
     }
     
-    async function discardDead(cardId, event){ 
-        if(event) event.stopPropagation(); 
+    async function createGame() {
+        state.name = document.querySelector('#name').value.trim() || 'Pilot';
         try {
-            await api('/api/action',{room:state.room,player:state.player,action:{type:'dead',cardId}});
-            state.selected=null;
-        } catch(e) { toast(e.message) } 
+            let x = await api('/api/create', { mode: state.mode, max: state.max, name: state.name, avatar: state.avatar });
+            state.room = x.room; state.player = x.player; lobby(); connect();
+        } catch(e) { toast(e.message); }
     }
     
-    async function cell(x,y){
-        let c=state.game.me.hand.find(x=>x.id===state.selected);
-        if(!c)return;
-        if(cardDead(c,state.game)){
-            toast('Click the DISCARD DEAD button on the card in your hand.');
+    function join() {
+        app.innerHTML = `
+        <main class="scifi-bg">
+            <section class="menu-panel">
+                <div class="eyebrow">UPLINK CONNECTION</div>
+                <h2 class="subtitle">Enter server coordinates</h2>
+                <div class="avatar-picker">
+                    ${avatars.map(a=>`<span class="${a===state.avatar?'selected':''}" onclick="state.avatar='${a}';join()">${a}</span>`).join('')}
+                </div>
+                <div class="form-row">
+                    <input id="code" placeholder="SERVER CODE (e.g. A1B2C3)" style="text-transform:uppercase">
+                    <input id="name" placeholder="Enter Callsign">
+                    <button class="btn" onclick="joinGame()">CONNECT</button>
+                </div>
+                <div class="actions"><button class="btn dark" style="margin-top:20px" onclick="home()">ABORT</button></div>
+            </section>
+        </main>`;
+    }
+    
+    async function joinGame() {
+        try {
+            let x = await api('/api/join', { room: document.querySelector('#code').value, name: document.querySelector('#name').value || 'Guest', avatar: state.avatar });
+            state.room = x.room; state.player = x.player; lobby(); connect();
+        } catch(e) { toast(e.message); }
+    }
+
+    function connect() {
+        state.es?.close();
+        state.es = new EventSource(`/events?player=${state.player}`);
+        state.es.addEventListener('state', e => {
+            state.game = JSON.parse(e.data); 
+            if(state.game.started) game(); else lobby();
+        });
+    }
+    
+    function lobby() {
+        let g = state.game || { code: state.room, players: [], max: state.max, host: state.player };
+        app.innerHTML = `
+        <main class="scifi-bg">
+            <section class="menu-panel">
+                <div class="eyebrow">SERVER LOBBY</div>
+                <div class="lobby-code">${g.code}</div>
+                <p class="subtitle" style="font-size:14px">Transmit this code to other pilots to grant network access.</p>
+                <div class="actions">
+                    <button class="btn dark" onclick="navigator.clipboard.writeText(shareOrigin+'/?room=${g.code}');toast('Uplink copied to clipboard')">COPY UPLINK</button>
+                    <button class="btn dark" onclick="navigator.clipboard.writeText('${g.code}');toast('Code copied to clipboard')">COPY CODE</button>
+                    ${g.host === state.player ? '<button class="btn" onclick="start()">INITIATE SEQUENCE</button>' : ''}
+                </div>
+                <div class="seats">
+                    ${Array.from({length: g.max}, (_, i) => {
+                        let p = g.players.find(q => q.seat === i);
+                        return `<div class="seat" style="--c:${p?.color || '#334433'}">${p ? `${p.avatar} <strong>${esc(p.name)}</strong> <span style="margin-left:auto;color:var(--text-dim)">${p.id===g.host?'HOST':'CONNECTED'}</span>` : `<span style="color:var(--border-color)">SLOT ${i+1} — AWAITING SIGNAL...</span>`}</div>`;
+                    }).join('')}
+                </div>
+                <div class="actions"><button class="btn dark" style="margin-top:20px" onclick="home()">DISCONNECT</button></div>
+            </section>
+        </main>`;
+    }
+    
+    async function start() {
+        try { await api('/api/start', { room: state.room, player: state.player }); } catch(e) { toast(e.message); }
+    }
+
+    function cardDead(c, g) {
+        // A card is dead if it is not a Jack AND there are no spaces on the board that are empty, not corners, and match the suit/rank.
+        return !c.jack && !g.board.some(x => !x.corner && !x.chip && x.rank === c.rank && x.suit === c.suit);
+    }
+    
+    function game() {
+        let g = state.game, me = g.me;
+        if (!me) return;
+        let mine = g.turn === me.id;
+        let selected = me.hand.find(c => c.id === state.selected);
+        
+        let legal = c => {
+            if (!selected || !mine) return false;
+            if (selected.eye === 'two') return !c.chip && !c.corner;
+            if (selected.eye === 'one') return !!c.chip && !c.locked.length && c.chip !== me.id;
+            return !c.chip && !c.corner && c.rank === selected.rank && c.suit === selected.suit;
+        };
+        
+        app.innerHTML = `
+        <main class="scifi-bg">
+            
+            <!-- TOP RIGHT: Turn Indicator -->
+            <div class="hud-panel turn-hud ${mine ? 'active' : ''}">
+                <div class="speaker-icon">${mine ? '🔊' : '🔈'}</div>
+                <div>${mine ? 'YOUR TURN' : 'AWAITING: ' + esc(g.players.find(p => p.id === g.turn)?.name.toUpperCase() || '')}</div>
+                ${selected ? `<div style="font-size:11px; margin-left:10px; padding-left:10px; border-left:1px solid #333;">${selected.eye==='two'?'TARGET ANY':'TARGET ENEMY'}</div>` : ''}
+            </div>
+
+            <!-- RIGHT EDGE: Stats & Dead Pile -->
+            <aside class="hud-panel right-hud">
+                <div class="eyebrow" style="margin:0">NETWORK STATUS</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    ${g.players.map(p => `
+                        <div class="player-stat ${g.turn === p.id ? 'active' : ''}" style="--c:${p.color}">
+                            <div class="dot"></div>
+                            <div style="flex-grow:1">
+                                <strong>${p.avatar} ${esc(p.name)}</strong>
+                                <div style="color:var(--text-dim); font-size:11px; margin-top:2px;">SEQ: ${p.sequences} | CARDS: ${p.handCount}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="dead-pile">
+                    <div class="eyebrow">DEAD CARD PILE</div>
+                    <div class="stack discard">${g.discard?.label || '—'}</div>
+                    <div style="font-size:11px; color:var(--text-dim)">${g.deckCount} CARDS IN DECK</div>
+                </div>
+            </aside>
+            
+            <!-- BOTTOM LEFT: Chat Interface Shell -->
+            <div class="hud-panel chat-hud">
+                <div class="eyebrow">COMMS LINK</div>
+                <div class="chat-log">
+                    ${g.history.slice(-4).map(h => `<div style="margin-bottom:6px">> ${esc(h.text)}</div>`).join('')}
+                </div>
+                <div class="chat-controls">
+                    <button class="chat-btn">😀</button>
+                    <button class="chat-btn">👍</button>
+                    <button class="chat-btn">🤯</button>
+                    <div style="width:1px; height:15px; background:var(--border-color); margin:0 5px;"></div>
+                    <button class="chat-btn">🔊</button>
+                </div>
+            </div>
+
+            <!-- CENTER: Main Game Board -->
+            <div class="board-container">
+                <div class="board">
+                    ${g.board.map(c => `
+                        <div class="cell ${c.corner ? 'free' : ''} ${legal(c) ? 'legal' : ''}" onclick="cell(${c.x},${c.y})">
+                            ${c.chip ? `<i class="chip" style="--c:${g.players.find(p=>p.id===c.chip)?.color}"></i>` : c.label || ''}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <!-- ABSOLUTE BOTTOM: Player Hand -->
+            <div class="hand-container">
+                <div class="hand">
+                    ${me.hand.map(c => {
+                        let isDead = cardDead(c, g);
+                        return `
+                        <button class="card ${['♥','♦'].includes(c.suit) ? 'red' : ''} ${state.selected === c.id ? 'selected' : ''}" onclick="select('${c.id}')" ${!mine && !isDead ? 'disabled' : ''}>
+                            <span class="corner-val top">${c.label}</span>
+                            
+                            ${c.eye ? `<span class="tag">${c.eye==='two'?'WILD (ANY)':'SNIPE (ENEMY)'}</span>` : ''}
+                            
+                            <!-- DEAD CARD BUTTON -->
+                            ${isDead ? `<div class="discard-btn" onclick="discardDead('${c.id}', event)">DISCARD DEAD</div>` : ''}
+                            
+                            <span class="corner-val bottom">${c.label}</span>
+                        </button>
+                    `}).join('')}
+                </div>
+            </div>
+
+        </main>
+        
+        <!-- VICTORY SCREEN -->
+        ${g.winner ? `
+        <div class="victory-overlay">
+            <section class="menu-panel" style="border-color:var(--neon-green)">
+                <div class="eyebrow" style="color:#fff">SEQUENCE ACHIEVED</div>
+                <h1 class="title" style="color:var(--neon-green)">VICTORY</h1>
+                <p class="subtitle" style="color:#fff">${esc(g.winner.name)} HAS SECURED THE GRID.</p>
+                <div class="actions">
+                    <button class="btn" onclick="home()">NEW DEPLOYMENT</button>
+                    <button class="btn dark" onclick="lobby()">RETURN TO LOBBY</button>
+                </div>
+            </section>
+        </div>` : ''}
+        `;
+    }
+
+    function select(cardId) {
+        let c = state.game.me.hand.find(x => x.id === cardId);
+        if (state.selected === cardId) { state.selected = null; game(); return; }
+        state.selected = cardId;
+        game();
+    }
+    
+    // Explicit function for the bright red Dead Card discard button
+    async function discardDead(cardId, event) {
+        if (event) event.stopPropagation(); // Prevent the main card click from firing
+        if (!state.game.me || state.game.turn !== state.game.me.id) {
+            toast('Wait for your turn to exchange a dead card.');
             return;
         }
         try {
-            await api('/api/action',{room:state.room,player:state.player,action:{type:'play',cardId:c.id,x,y}});
-            state.selected=null;
-        } catch(e) { toast(e.message) }
+            await api('/api/action', { room: state.room, player: state.player, action: { type: 'dead', cardId } });
+            state.selected = null;
+        } catch(e) { toast(e.message); }
     }
     
-    function howto(){app.innerHTML=`<main class="wood"><section class="setup panel"><div class="eyebrow">HOW TO PLAY</div><h2 class="subtitle">Build five. Think ahead.</h2><div class="seats"><div class="seat" style="--c:#d5aa54"><strong>OBJECTIVE</strong> Make five connected chips across, down, or diagonally. Corners are free wild spaces.</div><div class="seat" style="--c:#d5aa54"><strong>TURNS</strong> Play a card, then place a chip on either matching space. Draw happens automatically.</div><div class="seat" style="--c:#d5aa54"><strong>JACKS</strong> Two-eyed Jacks place anywhere empty. One-eyed Jacks remove an unprotected opponent chip.</div><div class="seat" style="--c:#d5aa54"><strong>DEAD CARDS</strong> If both matching spaces are occupied, exchange the card once per turn, then take your turn.</div><div class="seat" style="--c:#d5aa54"><strong>WINNING</strong> Two players/teams need two sequences; three or four individual players need one.</div></div><button class="btn" onclick="home()">GOT IT</button></section></main>`}
+    async function cell(x, y) {
+        let c = state.game.me.hand.find(x => x.id === state.selected);
+        if (!c) return;
+        if (cardDead(c, state.game)) {
+            toast('Click the red DISCARD DEAD button on the card instead.');
+            return;
+        }
+        try {
+            await api('/api/action', { room: state.room, player: state.player, action: { type: 'play', cardId: c.id, x, y } });
+            state.selected = null;
+        } catch(e) { toast(e.message); }
+    }
     
-    const roomParam=new URLSearchParams(location.search).get('room');
-    if(roomParam){
+    function howto() {
+        app.innerHTML = `
+        <main class="scifi-bg">
+            <section class="menu-panel">
+                <div class="eyebrow">DATABANK: MISSION OBJECTIVES</div>
+                <h2 class="title" style="font-size:30px">HOW TO PLAY</h2>
+                <div class="seats" style="font-size:14px; line-height:1.4">
+                    <div class="seat" style="--c:var(--neon-green)"><strong>OBJECTIVE:</strong> Form lines of 5 marker chips (horizontal, vertical, diagonal). Corners act as free wild spaces for any player.</div>
+                    <div class="seat" style="--c:var(--neon-green)"><strong>TURNS:</strong> Select a card from your hand, then tap an available matching space on the grid to deploy a chip. Draw is automatic.</div>
+                    <div class="seat" style="--c:var(--neon-green)"><strong>JACKS:</strong> 2-Eyed Jacks deploy a chip on ANY empty space. 1-Eyed Jacks destroy an unprotected enemy chip.</div>
+                    <div class="seat" style="--c:var(--neon-red)"><strong>DEAD CARDS:</strong> If both spaces for a standard card are occupied, it is "DEAD". A red discard button will appear. Click it during your turn to swap it, then take your normal turn.</div>
+                </div>
+                <div class="actions"><button class="btn" onclick="home()">ACKNOWLEDGE</button></div>
+            </section>
+        </main>`;
+    }
+    
+    const roomParam = new URLSearchParams(location.search).get('room');
+    if (roomParam) {
         join();
-        setTimeout(()=>document.querySelector('#code').value=roomParam,0)
+        setTimeout(() => document.querySelector('#code').value = roomParam.toUpperCase(), 0);
     } else {
         home();
     }
