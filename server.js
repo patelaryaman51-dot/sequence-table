@@ -22,14 +22,12 @@ function deck(){
 
 function board(){
   const cards=[]; let k=0; const normal=[];
-  // Normal cards exclude Jacks
   for(const s of suits) for(const r of ranks) if(r!=='J') normal.push({rank:r,suit:s,label:r+s});
   
-  // Create 10x10 grid (100 spaces)
-  for(let y=0;y<10;y++) {
-    for(let x=0;x<10;x++) {
-      // Corners are at 0,0 | 0,9 | 9,0 | 9,9
-      const corner=(x===0||x===9)&&(y===0||y===9);
+  // 12x12 grid (144 spaces)
+  for(let y=0;y<12;y++) {
+    for(let x=0;x<12;x++) {
+      const corner=(x===0||x===11)&&(y===0||y===11);
       cards.push(corner?{x,y,corner:true,label:'FREE',chip:null,locked:[]}:{x,y,...normal[k++%normal.length],chip:null,locked:[]});
     }
   }
@@ -37,7 +35,7 @@ function board(){
 }
 
 function newRoom(mode='individual', max=4){ const room={code:code(), mode,max,host:null,players:[],started:false,board:board(),deck:deck(),discard:[],turn:0,history:[],winner:null,deadUsed:false}; rooms.set(room.code,room); return room; }
-function color(room,index){ return room.mode==='team'?(index%2?'#d45a4f':'#2f82c9'):['#2f82c9','#d45a4f','#45a66e','#d6a63f'][index]; }
+function color(room,index){ return room.mode==='team'?(index%2?'#d45a4f':'#2f82c9'):['#0284c7','#dc2626','#16a34a','#ca8a04'][index]; }
 
 function publicState(room, playerId){
  const me=room.players.find(p=>p.id===playerId);
@@ -55,9 +53,8 @@ function linesFrom(room,cell,player){
      const pts=[]; 
      for(let n=0;n<5;n++){
        let x=cell.x+(offset+n)*dx,y=cell.y+(offset+n)*dy;
-       // Boundary check for 10x10 board (max coordinate is 9)
-       if(x<0||y<0||x>9||y>9){pts.length=0;break}
-       pts.push(room.board[y*10+x]); // Math updated for 10 width
+       if(x<0||y<0||x>11||y>11){pts.length=0;break}
+       pts.push(room.board[y*12+x]);
      }
      if(pts.length===5 && pts.every(c=>c.corner || (c.chip&&teamFor(room,room.players.find(p=>p.id===c.chip))===team))) out.push(pts);
    }
@@ -104,4 +101,4 @@ const server=http.createServer((req,res)=>{
  const file=url.pathname==='/'?'index.html':url.pathname.slice(1); const safe=path.join(root,file);if(!safe.startsWith(root)||!fs.existsSync(safe)){res.writeHead(404);res.end('Not found');return;}res.writeHead(200,{'Content-Type':file.endsWith('.css')?'text/css':'text/html'});fs.createReadStream(safe).pipe(res);
 });
 
-server.listen(process.env.PORT||3000,()=>console.log('Sequence Table ready at http://localhost:3000'));
+server.listen(process.env.PORT||3000,()=>console.log('Sequence 12x12 Table ready at http://localhost:3000'));
