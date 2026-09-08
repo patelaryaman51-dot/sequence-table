@@ -33,13 +33,17 @@
     .brand span { color: var(--accent-primary); }
     .status-pill { background: rgba(2, 132, 199, 0.1); border: 1px solid var(--accent-primary); color: var(--accent-primary); padding: 6px 16px; border-radius: 20px; font-weight: 600; font-size: 13px; font-family: var(--font-mono); }
 
-    /* Main Workspace */
-    .workspace { flex-grow: 1; display: grid; grid-template-columns: 1fr 340px; gap: 24px; padding: 24px; max-width: 1500px; margin: 0 auto; width: 100%; align-items: start; }
-    @media(max-width: 1100px) { .workspace { grid-template-columns: 1fr; } }
+    /* Main Workspace Layout */
+    .workspace { flex-grow: 1; display: grid; grid-template-columns: 320px 1fr 320px; gap: 24px; padding: 24px; max-width: 1600px; margin: 0 auto; width: 100%; align-items: start; }
+    @media(max-width: 1200px) { .workspace { grid-template-columns: 1fr; } }
 
-    /* Center Board Area (10x10) */
-    .center-area { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
-    .board-container { width: 100%; max-width: 660px; aspect-ratio: 1; background: #ffffff; border: 3px solid var(--border-color); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr); }
+    /* Left Hand Area (Horizontal Box) */
+    .left-hand-panel { display: flex; flex-direction: column; gap: 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+    .hand-horizontal { display: flex; flex-direction: row; gap: 10px; overflow-x: auto; padding: 10px 0; max-width: 100%; align-items: center; }
+
+    /* Center Fixed Board Area (10x10) */
+    .center-area { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; position: sticky; top: 90px; }
+    .board-container { width: 100%; max-width: 680px; aspect-ratio: 1; background: #ffffff; border: 3px solid var(--border-color); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr); }
     
     .cell { position: relative; display: grid; place-items: center; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; background: #ffffff; color: var(--text-main); font: 700 13px var(--font-mono); transition: 0.15s; }
     .cell:nth-child(odd) { background: #f8fafc; }
@@ -68,14 +72,13 @@
     .stack-box { background: #f8fafc; border: 1px dashed var(--border-color); border-radius: 8px; padding: 12px; font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); }
     .stack-val { font-size: 16px; font-weight: 700; color: var(--text-main); margin-top: 6px; }
 
-    /* Bottom Hand Dock */
-    .hand-dock { position: sticky; bottom: 0; background: rgba(255, 255, 255, 0.95); border-top: 1px solid var(--border-color); backdrop-filter: blur(12px); padding: 16px 30px; display: flex; justify-content: center; gap: 14px; z-index: 40; flex-wrap: wrap; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); }
-    .card { width: 92px; height: 138px; background: #ffffff; color: #0f172a; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: space-between; padding: 10px; font: 700 18px var(--font-mono); transition: 0.2s; position: relative; border: 2px solid var(--border-color); }
+    /* Card Styling */
+    .card { width: 84px; height: 124px; background: #ffffff; color: #0f172a; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; justify-content: space-between; padding: 8px; font: 700 16px var(--font-mono); transition: 0.2s; position: relative; border: 2px solid var(--border-color); flex-shrink: 0; }
     .card.red { color: var(--accent-danger); }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 12px 25px rgba(0,0,0,0.12); }
-    .card.selected { transform: translateY(-14px); border-color: var(--accent-primary); box-shadow: 0 0 20px var(--accent-glow); }
-    .card .tag { font: 600 9px var(--font-ui); background: #0f172a; color: #fff; padding: 4px 0; border-radius: 4px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 88%; }
-    .discard-dead-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--accent-danger); color: #fff; font: 700 10px var(--font-ui); border: none; padding: 8px 0; width: 90%; border-radius: 5px; z-index: 10; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4); cursor: pointer; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 8px 18px rgba(0,0,0,0.1); }
+    .card.selected { transform: translateY(-8px); border-color: var(--accent-primary); box-shadow: 0 0 15px var(--accent-glow); }
+    .card .tag { font: 600 8px var(--font-ui); background: #0f172a; color: #fff; padding: 3px 0; border-radius: 3px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 88%; }
+    .discard-dead-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--accent-danger); color: #fff; font: 700 9px var(--font-ui); border: none; padding: 6px 0; width: 90%; border-radius: 4px; z-index: 10; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4); cursor: pointer; }
     .discard-dead-btn:hover { filter: brightness(1.1); }
     
     /* Buttons & Modals */
@@ -138,7 +141,7 @@
         app.innerHTML = `
         <div class="modal-overlay">
             <div class="modal-card">
-                <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-primary); letter-spacing: 0.2em; margin-bottom: 8px;">MINIMALIST EDITION</div>
+                <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-primary); letter-spacing: 0.2em; margin-bottom: 8px;">DIGITAL TABLETOP EDITION</div>
                 <h1 style="font-size: 40px; margin: 0 0 8px 0; font-weight: 700; letter-spacing: -0.02em;">SEQUENCE</h1>
                 <p style="color: var(--text-dim); margin-bottom: 30px; font-size: 14px;">Tactical strategy board game.</p>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -221,11 +224,13 @@
     
     function lobby() {
         let g = state.game || { code: state.room, players: [], max: state.max, host: state.player };
+        let inviteLink = window.location.origin + '/?room=' + g.code;
         app.innerHTML = `
         <div class="modal-overlay">
             <div class="modal-card">
                 <div style="font-family:var(--font-mono); font-size:28px; letter-spacing:0.15em; color:var(--accent-primary); margin-bottom:6px;">${g.code}</div>
-                <p style="color:var(--text-dim); margin-bottom:20px; font-size:13px;">Waiting for participants...</p>
+                <p style="color:var(--text-dim); margin-bottom:14px; font-size:13px;">Waiting for participants...</p>
+                <button class="btn-primary" style="background:transparent; border:1px solid var(--accent-primary); color:var(--accent-primary); width:100%; margin-bottom:16px; font-size:13px;" onclick="navigator.clipboard.writeText('${inviteLink}');toast('Invite link copied!')">📋 COPY FRIEND INVITE LINK</button>
                 <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
                     ${Array.from({length: g.max}, (_, i) => {
                         let p = g.players.find(q => q.seat === i);
@@ -267,6 +272,7 @@
         let mine = g.turn === me.id;
         let selected = me.hand.find(c => c.id === state.selected);
         let turnPlayerName = g.players.find(p => p.id === g.turn)?.name || 'Someone';
+        let inviteLink = window.location.origin + '/?room=' + g.code;
         
         let legal = c => {
             if (!selected || !mine) return false;
@@ -278,13 +284,31 @@
         app.innerHTML = `
         <div id="app">
             <header class="header">
-                <div class="brand">SEQUENCE <span>· LIGHT</span></div>
+                <div class="brand">SEQUENCE <span>· TABLE</span></div>
+                <button class="btn-primary" style="padding:6px 14px; font-size:12px;" onclick="navigator.clipboard.writeText('${inviteLink}');toast('Invite link copied!')">📋 INVITE FRIEND</button>
                 <div class="status-pill">${mine ? 'YOUR TURN' : `TURN: ${turnPlayerName.toUpperCase()}`}</div>
                 <button class="btn-icon" onclick="playBeep('click'); audioEnabled=!audioEnabled; toast(audioEnabled?'Audio Enabled':'Audio Muted')">🔊 AUDIO</button>
             </header>
 
             <div class="workspace">
-                <!-- Center Board (10x10) -->
+                <!-- Left Column: Horizontal Hand & Player Stats -->
+                <div class="left-hand-panel">
+                    <div class="panel-title">Your Hand (${me.hand.length})</div>
+                    <div class="hand-horizontal">
+                        ${me.hand.map(c => {
+                            let isDead = cardDead(c, g);
+                            return `
+                            <button class="card ${['♥','♦'].includes(c.suit) ? 'red' : ''} ${state.selected === c.id ? 'selected' : ''}" onclick="select('${c.id}')" ${!mine && !isDead ? 'disabled' : ''}>
+                                <div style="line-height:1;">${c.label}</div>
+                                ${c.eye ? `<div class="tag">${c.eye==='two'?'WILD':'SNIPE'}</div>` : ''}
+                                ${isDead ? `<button class="discard-dead-btn" onclick="discardDead('${c.id}', event)">DISCARD DEAD</button>` : ''}
+                                <div style="line-height:1; align-self:flex-end; transform:rotate(180deg);">${c.label}</div>
+                            </button>
+                        `;}).join('')}
+                    </div>
+                </div>
+
+                <!-- Center Board (10x10 Fixed Position) -->
                 <div class="center-area">
                     <div class="board-container">
                         ${g.board.map(c => `
@@ -300,20 +324,9 @@
                     <div class="panel">
                         <div class="panel-title">Turn Status</div>
                         <div style="font-size:14px; font-weight:600; color:var(--text-main); margin-bottom:4px;">
-                            ${mine ? 'It is currently your turn. Please make your move.' : `Waiting for ${turnPlayerName}...`}
+                            ${mine ? 'It is currently your turn. Make your move.' : `Waiting for ${turnPlayerName}...`}
                         </div>
-                        <div style="font-size:12px; color:var(--text-dim);">Next Turn: ${turnPlayerName}</div>
-                    </div>
-
-                    <div class="panel chat-box">
-                        <div class="panel-title">Chat & Game Log</div>
-                        <div class="chat-messages" id="chat-log">
-                            ${g.history.slice(-8).map(h => `<div>${esc(h.text)}</div>`).join('')}
-                        </div>
-                        <div class="chat-input-row">
-                            <input id="chat-msg" class="chat-input" placeholder="Type a message..." onkeypress="if(event.key==='Enter')sendChat()">
-                            <button class="btn-icon" onclick="sendChat()">➤</button>
-                        </div>
+                        <div style="font-size:12px; color:var(--text-dim);">Room: ${g.code}</div>
                     </div>
 
                     <div class="panel">
@@ -329,34 +342,17 @@
                         `).join('')}
                     </div>
 
-                    <div class="panel">
-                        <div class="panel-title">Table Piles</div>
-                        <div class="piles-grid">
-                            <div class="stack-box">
-                                <div>DECK</div>
-                                <div class="stack-val">${g.deckCount}</div>
-                            </div>
-                            <div class="stack-box">
-                                <div>DISCARD</div>
-                                <div class="stack-val" style="color:var(--accent-primary);">${g.discard?.label || '—'}</div>
-                            </div>
+                    <div class="panel chat-box">
+                        <div class="panel-title">Chat & Log</div>
+                        <div class="chat-messages" id="chat-log">
+                            ${g.history.slice(-6).map(h => `<div>${esc(h.text)}</div>`).join('')}
+                        </div>
+                        <div class="chat-input-row">
+                            <input id="chat-msg" class="chat-input" placeholder="Say something..." onkeypress="if(event.key==='Enter')sendChat()">
+                            <button class="btn-icon" onclick="sendChat()">➤</button>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Bottom Hand Dock -->
-            <div class="hand-dock">
-                ${me.hand.map(c => {
-                    let isDead = cardDead(c, g);
-                    return `
-                    <button class="card ${['♥','♦'].includes(c.suit) ? 'red' : ''} ${state.selected === c.id ? 'selected' : ''}" onclick="select('${c.id}')" ${!mine && !isDead ? 'disabled' : ''}>
-                        <div style="line-height:1;">${c.label}</div>
-                        ${c.eye ? `<div class="tag">${c.eye==='two'?'WILD':'SNIPE'}</div>` : ''}
-                        ${isDead ? `<button class="discard-dead-btn" onclick="discardDead('${c.id}', event)">DISCARD DEAD CARD</button>` : ''}
-                        <div style="line-height:1; align-self:flex-end; transform:rotate(180deg);">${c.label}</div>
-                    </button>
-                `;}).join('')}
             </div>
 
             ${g.winner ? `
