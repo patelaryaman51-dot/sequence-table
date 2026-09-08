@@ -113,7 +113,6 @@
     .player-stats { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
     .current-turn-tag { font-size: 10px; font-weight: 800; color: var(--neon-teal); margin-top: 6px; letter-spacing: 0.1em; }
 
-    /* EXACTLY 6 CARDS - NO SCROLLBAR */
     .hand-panel {
         flex-grow: 1;
         background: var(--panel-bg);
@@ -134,7 +133,6 @@
         margin-top: 10px;
     }
     
-    /* APPLE MUSIC PANEL */
     .music-panel {
         background: var(--panel-bg);
         border: 1px solid var(--panel-border);
@@ -170,7 +168,6 @@
     .input-bar { display: flex; gap: 6px; }
     .chat-input { flex-grow: 1; background: rgba(0,0,0,0.6); border: 1px solid var(--panel-border); border-radius: 6px; padding: 8px 10px; color: #fff; outline: none; font-size: 12px; }
 
-    /* NEW DEAD PILE SECTION ON THE RIGHT */
     .dead-pile-panel {
         background: var(--panel-bg);
         border: 1px solid var(--neon-red);
@@ -180,7 +177,7 @@
         backdrop-filter: blur(10px);
         cursor: pointer;
         transition: 0.2s;
-        margin-top: auto; /* Push to bottom of right column */
+        margin-top: auto;
     }
     .dead-pile-panel:hover { box-shadow: 0 0 15px rgba(229, 62, 62, 0.3); }
     .dp-title { font-size: 12px; font-weight: 800; color: var(--neon-red); letter-spacing: 0.1em; margin-bottom: 10px; }
@@ -227,7 +224,7 @@
     }
 
     .card {
-        height: 100%; /* Stretches to fill the 6-grid */
+        height: 100%; 
         width: 100%;
         background: #ffffff;
         color: #0f172a;
@@ -283,9 +280,9 @@
     const avatars = ['👽','🤖','👾','👻','🦊','🐼'];
     let prevSequences = {};
     
-    // DIRECT INTERNET LINKS FOR GIFS - NO GITHUB UPLOAD NEEDED!
-    const SHINCHAN_GIF = "https://media.tenor.com/zV8Q8E_98pAAAAAC/shinchan-dance.gif";
-    const MONKEY_GIF = "https://media.tenor.com/4bM_L3V8RwgAAAAC/monkey.gif";
+    // RELIABLE GIPHY DIRECT LINKS FOR ANIMATIONS
+    const SEQUENCE_GIF = "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif"; // Party/Celebration
+    const WIN_GIF = "https://media.giphy.com/media/5Zesu5VP1lUe28a/giphy.gif"; // Funny Monkey
     
     function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
     function toast(t) {
@@ -325,7 +322,6 @@
                 <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 16px;">
                     <button class="btn-primary" style="margin-top:0; padding:10px; background:${state.mode==='individual'?'var(--neon-teal)':'transparent'}; color:${state.mode==='individual'?'#000':'var(--text-main)'}; border:2px solid var(--neon-teal);" onclick="state.mode='individual'; setup()">INDIVIDUAL</button>
                     <button class="btn-primary" style="margin-top:0; padding:10px; background:${state.mode==='team'?'var(--neon-teal)':'transparent'}; color:${state.mode==='team'?'#000':'var(--text-main)'}; border:2px solid var(--neon-teal);" onclick="state.mode='team'; setup()">TEAM</button>
-                    <!-- NEW VS COMPUTER BUTTON -->
                     <button class="btn-primary" style="margin-top:0; padding:10px; background:${state.mode==='computer'?'var(--neon-teal)':'transparent'}; color:${state.mode==='computer'?'#000':'var(--text-main)'}; border:2px solid var(--neon-teal);" onclick="state.mode='computer'; setup()">VS COMPUTER</button>
                 </div>
                 ${state.mode !== 'computer' ? `
@@ -397,7 +393,7 @@
         const alert = document.createElement('div');
         alert.className = 'sequence-alert';
         alert.innerHTML = `
-            <img src="${SHINCHAN_GIF}" alt="Dancing Shinchan">
+            <img src="${SEQUENCE_GIF}" alt="Sequence Celebration">
             <div class="seq-name">${esc(name)} GOT A SEQUENCE!</div>
         `;
         document.body.appendChild(alert);
@@ -430,14 +426,12 @@
         try { await api('/api/start', { room: state.room, player: state.player }); } catch(e) { toast(e.message); }
     }
 
-    // CHECK IF A CARD IS COMPLETELY BLOCKED ON THE BOARD
     function cardDead(c, g) {
         if(c.jack) return false;
         const spaces = g.board.filter(x => !x.corner && x.rank === c.rank && x.suit === c.suit);
         return spaces.length > 0 && spaces.every(x => x.chip !== null);
     }
 
-    // NEW DEAD CARD PILE CLICK LOGIC
     async function discardToDeadPile() {
         if (!state.selected) {
             toast("Click a dead card in your hand first!");
@@ -497,6 +491,7 @@
         </div>
 
         <div class="layout-container">
+            <!-- Left Side: Hand, Music, and Chat -->
             <div class="left-col">
                 <div class="hand-panel">
                     <div style="width: 100%; font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.1em;">YOUR HAND</div>
@@ -513,10 +508,11 @@
                     </div>
                 </div>
 
-                <!-- NEW APPLE MUSIC PLAYER SECTION -->
+                <!-- YOUTUBE MUSIC PLAYER SECTION -->
                 <div class="music-panel">
                     <div class="music-header">BACKGROUND MUSIC</div>
-                    <iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="150" style="width:100%;max-width:660px;overflow:hidden;background:transparent;border-radius:10px;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/lo-fi-chill/pl.169dd91896174b6db2bf3a479ea29831?theme=dark"></iframe>
+                    <!-- Embedded Lofi Girl YouTube Stream. Users can just click play! -->
+                    <iframe width="100%" height="145" src="https://www.youtube.com/embed/jfKfPfyJRdk?controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="border-radius: 8px;" allowfullscreen></iframe>
                 </div>
                 
                 <div class="chat-panel">
@@ -535,6 +531,7 @@
                 </div>
             </div>
 
+            <!-- Center Side: The Main 10x10 Board -->
             <div class="center-col">
                 <div class="board-container">
                     ${g.board.map(c => `
@@ -545,6 +542,7 @@
                 </div>
             </div>
 
+            <!-- Right Side: Turn Status, Players, and Dead Pile -->
             <div class="right-col">
                 <div class="status-panel">
                     <div class="status-title">IT'S ${esc(turnPlayer.name).toUpperCase()}'S TURN!</div>
@@ -565,7 +563,6 @@
                     `;}).join('')}
                 </div>
 
-                <!-- DEAD CARD PILE SECTION -->
                 <div class="dead-pile-panel" onclick="discardToDeadPile()">
                     <div class="dp-title">DEAD CARD PILE</div>
                     <div class="dp-box">
@@ -579,8 +576,8 @@
         <div class="modal-overlay">
             <div class="modal-card">
                 <div style="font-size: 12px; color: var(--neon-teal); font-weight: 800; letter-spacing: 0.2em; margin-bottom: 20px;">MATCH CONCLUDED</div>
-                <!-- NOBI MONKEY GIF LOADED FROM INTERNET -->
-                <img src="${MONKEY_GIF}" style="width:250px; border-radius:12px; margin: 0 auto 20px; display:block; border: 3px solid var(--neon-teal); box-shadow: 0 10px 30px rgba(0,0,0,0.5);" alt="Victory Monkey">
+                <!-- FUNNY MONKEY VICTORY GIF -->
+                <img src="${WIN_GIF}" style="width:250px; border-radius:12px; margin: 0 auto 20px; display:block; border: 3px solid var(--neon-teal); box-shadow: 0 10px 30px rgba(0,0,0,0.5);" alt="Victory Monkey">
                 <h1 style="font-size: 40px; margin: 0 0 15px 0; font-family: var(--font-mono); color: #fff;">${esc(g.winner.name)} WINS!</h1>
                 <button class="btn-primary" onclick="home()">NEW MATCH</button>
             </div>
