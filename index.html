@@ -469,6 +469,15 @@
         if(input) input.value += emoji;
     }
 
+    function loadLocalAudio(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const audioPlayer = document.getElementById('local-audio-player');
+            audioPlayer.src = URL.createObjectURL(file);
+            audioPlayer.play();
+        }
+    }
+
     function game() {
         let g = state.game, me = g.me;
         if (!me) return;
@@ -508,11 +517,13 @@
                     </div>
                 </div>
 
-                <!-- YOUTUBE MUSIC PLAYER SECTION -->
+                <!-- LOCAL MUSIC PLAYER SECTION -->
                 <div class="music-panel">
-                    <div class="music-header">BACKGROUND MUSIC</div>
-                    <!-- Embedded Lofi Girl YouTube Stream. Users can just click play! -->
-                    <iframe width="100%" height="145" src="https://www.youtube.com/embed/jfKfPfyJRdk?controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="border-radius: 8px;" allowfullscreen></iframe>
+                    <div class="music-header">CUSTOM BACKGROUND MUSIC</div>
+                    <div style="display: flex; flex-direction: column; gap: 12px; justify-content: center; padding-top: 10px;">
+                        <input type="file" accept="audio/*" onchange="loadLocalAudio(event)" style="font-size: 11px; color: var(--text-main); background: rgba(0,0,0,0.6); padding: 8px; border-radius: 6px; border: 1px solid var(--panel-border); width: 100%; cursor: pointer;">
+                        <audio id="local-audio-player" controls loop style="width: 100%; height: 35px; outline: none; border-radius: 20px;"></audio>
+                    </div>
                 </div>
                 
                 <div class="chat-panel">
