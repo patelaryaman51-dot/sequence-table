@@ -134,8 +134,22 @@
         margin-top: 10px;
     }
     
+    /* APPLE MUSIC PANEL */
+    .music-panel {
+        background: var(--panel-bg);
+        border: 1px solid var(--panel-border);
+        border-radius: 16px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        backdrop-filter: blur(10px);
+        flex-shrink: 0;
+        height: 185px;
+    }
+    .music-header { padding: 0 4px 10px 4px; font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
     .chat-panel {
-        height: 220px;
+        height: 200px;
         background: var(--panel-bg);
         border: 1px solid var(--panel-border);
         border-radius: 16px;
@@ -497,6 +511,12 @@
                             </div>
                         `;}).join('')}
                     </div>
+                </div>
+
+                <!-- NEW APPLE MUSIC PLAYER SECTION -->
+                <div class="music-panel">
+                    <div class="music-header">BACKGROUND MUSIC</div>
+                    <iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="150" style="width:100%;max-width:660px;overflow:hidden;background:transparent;border-radius:10px;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/playlist/lo-fi-chill/pl.169dd91896174b6db2bf3a479ea29831?theme=dark"></iframe>
                 </div>
                 
                 <div class="chat-panel">
