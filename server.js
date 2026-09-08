@@ -22,28 +22,41 @@ function deck(){
 
 function board(){
   const cards=[]; let k=0; const normal=[];
+  // Generate 96 standard cards (2 decks without Jacks)
   for(const s of suits) for(const r of ranks) if(r!=='J') normal.push({rank:r,suit:s,label:r+s});
   
-  // 12x12 grid (144 spaces)
-  for(let y=0;y<12;y++) {
-    for(let x=0;x<12;x++) {
-      const corner=(x===0||x===11)&&(y===0||y===11);
+  // 10x10 grid (100 spaces) - exactly fits 96 cards + 4 corners
+  for(let y=0;y<10;y++) {
+    for(let x=0;x<10;x++) {
+      const corner=(x===0||x===9)&&(y===0||y===9);
       cards.push(corner?{x,y,corner:true,label:'FREE',chip:null,locked:[]}:{x,y,...normal[k++%normal.length],chip:null,locked:[]});
     }
   }
   return cards;
 }
 
-function newRoom(mode='individual', max=4){ const room={code:code(), mode,max,host:null,players:[],started:false,board:board(),deck:deck(),discard:[],turn:0,history:[],winner:null,deadUsed:false}; rooms.set(room.code,room); return room; }
-function color(room,index){ return room.mode==='team'?(index%2?'#d45a4f':'#2f82c9'):['#0284c7','#dc2626','#16a34a','#ca8a04'][index]; }
+function newRoom(mode='individual', max=4){ 
+  const room={code:code(), mode, max, host:null, players:[], started:false, board:board(), deck:deck(), discard:[], deadPile:[], turn:0, history:[], winner:null, deadUsed:false}; 
+  rooms.set(room.code,room); 
+  return room; 
+}
+
+function color(room,index){ return room.mode==='team'?(index%2?'#e53e3e':'#3182ce'):['#3182ce','#e53e3e','#38a169','#d69e2e'][index]; }
 
 function publicState(room, playerId){
  const me=room.players.find(p=>p.id===playerId);
- return {code:room.code,mode:room.mode,max:room.max,host:room.host,started:room.started,board:room.board,discard:room.discard.at(-1)||null,deckCount:room.deck.length,turn:room.players[room.turn]?.id||null,deadUsed:room.deadUsed,winner:room.winner,history:room.history.slice(-8),players:room.players.map(p=>({id:p.id,name:p.name,avatar:p.avatar,color:p.color,connected:p.connected,handCount:p.hand.length,sequences:p.sequences,seat:p.seat})),me:me&&{id:me.id,name:me.name,hand:me.hand,color:me.color,seat:me.seat}};
+ return {
+   code:room.code, mode:room.mode, max:room.max, host:room.host, started:room.started, 
+   board:room.board, discard:room.discard.at(-1)||null, deadCard:room.deadPile.at(-1)||null,
+   deckCount:room.deck.length, discardCount:room.discard.length, deadPileCount:room.deadPile.length,
+   turn:room.players[room.turn]?.id||null, deadUsed:room.deadUsed, winner:room.winner, history:room.history.slice(-8), 
+   players:room.players.map(p=>({id:p.id,name:p.name,avatar:p.avatar,color:p.color,connected:p.connected,handCount:p.hand.length,sequences:p.sequences,seat:p.seat})),
+   me:me&&{id:me.id,name:me.name,hand:me.hand,color:me.color,seat:me.seat}
+ };
 }
 
 function send(room){ for(const p of room.players){ const res=sse.get(p.id); if(res) res.write(`event: state\ndata: ${JSON.stringify(publicState(room,p.id))}\n\n`); } }
-function startingHand(max){ return max===2?7:6; }
+function startingHand(max){ return max===2?7:(max===3?6:5); }
 function teamFor(room,p){ return room.mode==='team'?p.seat%2:p.id; }
 
 function linesFrom(room,cell,player){
@@ -52,9 +65,9 @@ function linesFrom(room,cell,player){
    for(let offset=-4;offset<=0;offset++){
      const pts=[]; 
      for(let n=0;n<5;n++){
-       let x=cell.x+(offset+n)*dx,y=cell.y+(offset+n)*dy;
-       if(x<0||y<0||x>11||y>11){pts.length=0;break}
-       pts.push(room.board[y*12+x]);
+       let x=cell.x+(offset+n)*dx, y=cell.y+(offset+n)*dy;
+       if(x<0||y<0||x>9||y>9){pts.length=0;break} // 10x10 bounds
+       pts.push(room.board[y*10+x]);
      }
      if(pts.length===5 && pts.every(c=>c.corner || (c.chip&&teamFor(room,room.players.find(p=>p.id===c.chip))===team))) out.push(pts);
    }
@@ -68,11 +81,22 @@ function action(room, player, a){
  if(!room.started||room.winner) throw Error('The game is not currently accepting moves.');
  if(room.players[room.turn]?.id!==player.id) throw Error('It is not your turn.');
  const card=player.hand.find(c=>c.id===a.cardId); if(!card) throw Error('That card is not in your hand.');
+ 
  if(a.type==='dead'){
    if(room.deadUsed||card.jack) throw Error('That card cannot be exchanged now.');
-   const spots=room.board.filter(c=>!c.corner&&!c.chip&&c.rank===card.rank&&c.suit===card.suit); if(spots.length) throw Error('This card still has an open board space.');
-   player.hand=player.hand.filter(c=>c.id!==card.id);room.discard.push(card); if(room.deck.length)player.hand.push(room.deck.pop());room.deadUsed=true;room.history.push({text:`${player.name} exchanged a dead card`});send(room);return;
+   const spots=room.board.filter(c=>!c.corner&&!c.chip&&c.rank===card.rank&&c.suit===card.suit); 
+   if(spots.length > 0) throw Error('This card still has an open board space. It is not dead.');
+   
+   player.hand=player.hand.filter(c=>c.id!==card.id);
+   room.deadPile.push(card); // goes specifically to dead pile
+   if(room.deck.length) player.hand.push(room.deck.pop());
+   
+   room.deadUsed=true;
+   room.history.push({text:`${player.name} exchanged a dead card`});
+   send(room);
+   return;
  }
+ 
  const cell=room.board.find(c=>c.x===a.x&&c.y===a.y); if(!cell) throw Error('Invalid board space.');
  if(card.eye==='one'){
    if(!cell.chip || cell.locked.length || teamFor(room,room.players.find(p=>p.id===cell.chip))===teamFor(room,player)) throw Error('Choose an unprotected opponent chip.');
@@ -101,4 +125,4 @@ const server=http.createServer((req,res)=>{
  const file=url.pathname==='/'?'index.html':url.pathname.slice(1); const safe=path.join(root,file);if(!safe.startsWith(root)||!fs.existsSync(safe)){res.writeHead(404);res.end('Not found');return;}res.writeHead(200,{'Content-Type':file.endsWith('.css')?'text/css':'text/html'});fs.createReadStream(safe).pipe(res);
 });
 
-server.listen(process.env.PORT||3000,()=>console.log('Sequence 12x12 Table ready at http://localhost:3000'));
+server.listen(process.env.PORT||3000,()=>console.log('Sequence Table (10x10) ready at http://localhost:3000'));
