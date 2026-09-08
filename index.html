@@ -377,39 +377,39 @@
             state.game = JSON.parse(e.data);
             
             // Check for new sequences to show Shinchan GIF popup
-            let newSeqName = null;
-            if (state.game && state.game.started) {
-                state.game.players.forEach(p => {
-                    if (prevSequences[p.id] !== undefined && p.sequences > prevSequences[p.id]) {
-                        newSeqName = state.game.mode === 'team' ? (p.seat % 2 ? 'RED TEAM' : 'BLUE TEAM') : p.name;
-                    }
-                    prevSequences[p.id] = p.sequences;
-                });
-                
-                // Show sequence popup if not game over
-                if (newSeqName && !state.game.winner) {
-                    showSequenceAlert(newSeqName);
+        let newSeqName = null;
+        if (state.game && state.game.started) {
+            state.game.players.forEach(p => {
+                if (prevSequences[p.id] !== undefined && p.sequences > prevSequences[p.id]) {
+                    newSeqName = state.game.mode === 'team' ? (p.seat % 2 ? 'RED TEAM' : 'BLUE TEAM') : p.name;
                 }
+                prevSequences[p.id] = p.sequences;
+            });
+            
+            // Show sequence popup if not game over
+            if (newSeqName && !state.game.winner) {
+                showSequenceAlert(newSeqName);
             }
+        }
 
-            if (state.game.started) game(); else lobby();
-        });
-    }
+        if (state.game.started) game(); else lobby();
+    });
+}
 
-    function showSequenceAlert(name) {
-        // Prevent stacking alerts
-        document.querySelector('.sequence-alert')?.remove();
-        const alert = document.createElement('div');
-        alert.className = 'sequence-alert';
-        alert.innerHTML = `
-            <img src="shinchan.gif" alt="Dancing Shinchan">
-            <div class="seq-name">${esc(name)} COMPLETED A SEQUENCE!</div>
-        `;
-        document.body.appendChild(alert);
-        setTimeout(() => alert.remove(), 4000);
-    }
+function showSequenceAlert(name) {
+    // Prevent stacking alerts
+    document.querySelector('.sequence-alert')?.remove();
+    const alert = document.createElement('div');
+    alert.className = 'sequence-alert';
+    alert.innerHTML = `
+        <img src="shinchan.gif" alt="Dancing Shinchan">
+        <div class="seq-name">${esc(name)} COMPLETED A SEQUENCE!</div>
+    `;
+    document.body.appendChild(alert);
+    setTimeout(() => alert.remove(), 4000);
+}
     
-    function lobby() {
+function lobby() {
         let g = state.game || { code: state.room, players: [], max: state.max, host: state.player };
         let inviteLink = shareOrigin + '/?room=' + g.code;
         app.innerHTML = `
@@ -561,9 +561,9 @@
             </div>
         </div>` : ''}
         `;
-    }
+}
 
-    function select(cardId) {
+function select(cardId) {
         if (state.selected === cardId) { state.selected = null; game(); return; }
         state.selected = cardId;
         game();
