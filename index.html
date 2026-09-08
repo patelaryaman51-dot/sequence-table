@@ -33,7 +33,6 @@
         color: var(--text-main); 
         font-family: var(--font-ui); 
         overflow: hidden; 
-        user-select: none; 
         height: 100vh;
         width: 100vw;
     }
@@ -42,18 +41,19 @@
 
     .layout-container {
         display: grid;
-        grid-template-columns: 320px 1fr 320px;
+        grid-template-columns: 280px 1fr 280px;
         height: 100vh;
         width: 100vw;
-        padding: 20px;
+        padding: 80px 20px 20px 20px; /* Space for top header */
         gap: 20px;
     }
 
     .left-col {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
         height: 100%;
+        overflow: hidden;
     }
 
     .center-col {
@@ -66,21 +66,21 @@
     .right-col {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
         height: 100%;
     }
 
     .header-banner {
         position: absolute;
-        top: 20px; left: 50%;
+        top: 15px; left: 50%;
         transform: translateX(-50%);
         background: linear-gradient(90deg, rgba(6,18,14,0.95) 0%, rgba(10,30,22,0.95) 50%, rgba(6,18,14,0.95) 100%);
         border: 1px solid var(--panel-border);
         border-radius: 20px;
-        padding: 12px 40px;
+        padding: 12px 30px;
         display: flex;
         align-items: center;
-        gap: 40px;
+        gap: 30px;
         box-shadow: 0 0 30px rgba(79, 209, 197, 0.1);
         z-index: 10;
         backdrop-filter: blur(10px);
@@ -92,42 +92,47 @@
         background: var(--panel-bg);
         border: 1px solid var(--neon-teal);
         border-radius: 16px;
-        padding: 20px;
+        padding: 25px 20px;
         text-align: center;
         backdrop-filter: blur(10px);
+        box-shadow: inset 0 0 20px rgba(79,209,197,0.1);
     }
-    .status-title { font-weight: 800; font-size: 18px; color: var(--neon-teal); text-transform: uppercase; }
+    .status-title { font-weight: 800; font-size: 18px; color: var(--neon-teal); text-transform: uppercase; line-height: 1.4; }
 
-    .players-panel { display: flex; flex-direction: column; gap: 12px; }
-    .players-header { font-size: 12px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase; }
+    .players-panel { display: flex; flex-direction: column; gap: 10px; }
+    .players-header { font-size: 12px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
     .player-row {
         background: var(--panel-bg);
         border: 1px solid var(--panel-border);
         border-radius: 12px;
-        padding: 16px;
+        padding: 12px 16px;
         backdrop-filter: blur(10px);
     }
     .player-row.active { border-color: var(--neon-teal); box-shadow: inset 0 0 15px rgba(79,209,197,0.15); }
     .player-name { font-weight: 800; font-size: 15px; color: #fff; }
-    .player-stats { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
-    .current-turn-tag { font-size: 11px; font-weight: 800; color: var(--neon-teal); margin-top: 8px; letter-spacing: 0.1em; }
+    .player-stats { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .current-turn-tag { font-size: 10px; font-weight: 800; color: var(--neon-teal); margin-top: 6px; letter-spacing: 0.1em; }
 
     .hand-panel {
         flex-grow: 1;
         background: var(--panel-bg);
         border: 1px solid var(--panel-border);
         border-radius: 16px;
-        padding: 20px;
+        padding: 15px;
         backdrop-filter: blur(10px);
         display: flex;
-        flex-wrap: wrap;
-        align-content: flex-start;
-        gap: 12px;
+        flex-direction: column;
         overflow-y: auto;
+    }
+    .hand-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 10px;
     }
     
     .chat-panel {
-        height: 250px;
+        height: 200px;
         background: var(--panel-bg);
         border: 1px solid var(--panel-border);
         border-radius: 16px;
@@ -135,26 +140,29 @@
         flex-direction: column;
         backdrop-filter: blur(10px);
         overflow: hidden;
+        flex-shrink: 0;
     }
-    .chat-header { padding: 12px 16px; font-size: 11px; font-weight: 800; border-bottom: 1px solid var(--panel-border); color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
-    .chat-messages { flex-grow: 1; overflow-y: auto; padding: 12px 16px; font-size: 13px; display: flex; flex-direction: column; gap: 8px; }
+    .chat-header { padding: 10px 14px; font-size: 11px; font-weight: 800; border-bottom: 1px solid var(--panel-border); color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .chat-messages { flex-grow: 1; overflow-y: auto; padding: 10px 14px; font-size: 12px; display: flex; flex-direction: column; gap: 6px; }
     .chat-msg { color: #cbd5e1; }
     .chat-msg span { font-weight: 800; color: var(--neon-teal); }
-    .chat-inputs { padding: 12px 16px; border-top: 1px solid var(--panel-border); background: rgba(0,0,0,0.4); }
-    .emoji-row { display: flex; gap: 12px; margin-bottom: 10px; font-size: 18px; }
+    .chat-inputs { padding: 10px 14px; border-top: 1px solid var(--panel-border); background: rgba(0,0,0,0.4); }
+    .emoji-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 16px; }
     .emoji-row span { cursor: pointer; transition: transform 0.1s; }
     .emoji-row span:hover { transform: scale(1.2); }
-    .input-bar { display: flex; gap: 8px; }
-    .chat-input { flex-grow: 1; background: rgba(0,0,0,0.6); border: 1px solid var(--panel-border); border-radius: 8px; padding: 10px 12px; color: #fff; outline: none; font-size: 13px; }
+    .input-bar { display: flex; gap: 6px; }
+    .chat-input { flex-grow: 1; background: rgba(0,0,0,0.6); border: 1px solid var(--panel-border); border-radius: 6px; padding: 8px 10px; color: #fff; outline: none; font-size: 12px; }
 
     .board-container {
-        width: min(85vh, 100%);
+        height: 100%;
+        max-height: 85vh;
         aspect-ratio: 1;
         background: #0f172a;
         border: 4px solid var(--neon-teal);
         border-radius: 16px;
         box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(79, 209, 197, 0.2);
         display: grid;
+        /* CRITICAL FIX: EXACTLY 10 COLUMNS AND 10 ROWS */
         grid-template-columns: repeat(10, 1fr);
         grid-template-rows: repeat(10, 1fr);
         overflow: hidden;
@@ -167,13 +175,13 @@
         border-bottom: 1px solid #1e293b;
         background: #f8fafc;
         color: #0f172a;
-        font: 800 clamp(10px, 2vh, 22px) var(--font-mono);
+        font: 800 clamp(10px, 1.8vh, 20px) var(--font-mono);
         transition: 0.2s;
     }
     .cell.red-suit { color: var(--neon-red); }
     .cell:nth-child(odd) { background: #ffffff; }
-    .cell.free { background: var(--bg-space); color: var(--neon-teal); font-size: clamp(8px, 1.2vh, 14px); flex-direction: column; border: 1px solid var(--neon-teal); }
-    .cell.free::after { content: 'FREE'; margin-top: 4px; }
+    .cell.free { background: var(--bg-space); color: var(--neon-teal); font-size: clamp(8px, 1.2vh, 12px); flex-direction: column; border: 1px solid var(--neon-teal); }
+    .cell.free::after { content: 'FREE'; margin-top: 2px; }
     .cell.legal:hover { background: rgba(79, 209, 197, 0.25); cursor: pointer; box-shadow: inset 0 0 0 3px var(--neon-teal); z-index: 5; }
     
     .chip { 
@@ -187,37 +195,37 @@
     }
 
     .card {
-        width: 80px; height: 115px;
+        width: 100%; aspect-ratio: 2.5/3.5;
         background: #ffffff;
         color: #0f172a;
-        border-radius: 8px;
-        box-shadow: -2px 5px 15px rgba(0,0,0,0.5);
+        border-radius: 6px;
+        box-shadow: -2px 5px 10px rgba(0,0,0,0.5);
         display: flex; flex-direction: column; justify-content: space-between;
-        padding: 8px;
-        font: 800 18px var(--font-mono);
+        padding: 6px;
+        font: 800 14px var(--font-mono);
         border: 2px solid transparent;
         transition: 0.2s;
         position: relative;
         cursor: pointer;
     }
     .card.red { color: var(--neon-red); }
-    .card.selected { transform: translateY(-15px) scale(1.05); border-color: var(--neon-teal); box-shadow: 0 0 25px rgba(79, 209, 197, 0.5); z-index: 5; }
+    .card.selected { transform: translateY(-10px) scale(1.05); border-color: var(--neon-teal); box-shadow: 0 0 20px rgba(79, 209, 197, 0.5); z-index: 5; }
     .card:disabled { opacity: 0.4; filter: grayscale(1); cursor: not-allowed; }
-    .card .tag { font: 800 9px var(--font-ui); background: #0f172a; color: #fff; padding: 4px 0; border-radius: 4px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; }
+    .card .tag { font: 800 8px var(--font-ui); background: #0f172a; color: #fff; padding: 4px 0; border-radius: 4px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; }
     
     .dead-watermark {
         position: absolute; inset: 0;
-        background: rgba(0,0,0,0.7);
-        border-radius: 6px;
+        background: rgba(0,0,0,0.8);
+        border-radius: 4px;
         display: flex; flex-direction: column; align-items: center; justify-content: center;
         z-index: 5;
     }
-    .dead-watermark span { color: var(--neon-red); font-size: 60px; font-weight: 400; opacity: 0.5; position: absolute; }
     .discard-dead-btn { 
-        background: var(--neon-red); color: #fff; font: 800 11px var(--font-ui); 
-        border: none; padding: 10px 0; width: 90%; border-radius: 6px; 
-        z-index: 10; cursor: pointer; 
+        background: var(--neon-red); color: #fff; font: 800 10px var(--font-ui); 
+        border: none; padding: 8px 0; width: 90%; border-radius: 4px; 
+        z-index: 10; cursor: pointer; text-align: center;
     }
+    .discard-dead-btn:hover { background: #c53030; }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); display: grid; place-items: center; z-index: 1000; backdrop-filter: blur(10px); }
     .modal-card { background: var(--panel-bg); border: 1px solid var(--neon-teal); border-radius: 20px; padding: 40px; text-align: center; max-width: 500px; width: 90%; }
@@ -230,18 +238,19 @@
         top: 50%; left: 50%;
         transform: translate(-50%, -50%);
         background: rgba(6, 18, 14, 0.98);
-        border: 2px solid var(--neon-teal);
+        border: 3px solid var(--neon-teal);
         border-radius: 20px;
-        padding: 30px 40px;
+        padding: 30px 50px;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 20px;
         z-index: 9999;
         animation: popIn 0.6s forwards;
+        box-shadow: 0 0 50px rgba(79, 209, 197, 0.4);
     }
-    .sequence-alert img { width: 180px; border-radius: 12px; border: 2px solid var(--panel-border); }
-    .sequence-alert .seq-name { font-size: 24px; font-weight: 800; color: var(--neon-teal); text-transform: uppercase; text-align: center; }
+    .sequence-alert img { width: 220px; border-radius: 12px; }
+    .sequence-alert .seq-name { font-size: 28px; font-weight: 800; color: var(--neon-teal); text-transform: uppercase; text-align: center; }
     @keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
   </style>
 </head>
@@ -254,6 +263,10 @@
     let state = { screen: 'home', mode: 'individual', max: 4, name: '', avatar: '👽', room: null, player: null, game: null, selected: null };
     const avatars = ['👽','🤖','👾','👻','🦊','🐼'];
     let prevSequences = {};
+    
+    // EXTERNAL IMAGE URLS - Guarantees they load without needing GitHub uploads!
+    const SHINCHAN_GIF = "https://media.tenor.com/zV8Q8E_98pAAAAAM/shinchan-dance.gif";
+    const MONKEY_GIF = "https://media.tenor.com/4bM_L3V8RwgAAAAi/monkey.gif";
     
     function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
     function toast(t) {
@@ -361,12 +374,13 @@
         document.querySelector('.sequence-alert')?.remove();
         const alert = document.createElement('div');
         alert.className = 'sequence-alert';
+        // External Shinchan GIF URL
         alert.innerHTML = `
-            <img src="shinchan.gif" alt="Dancing Shinchan">
-            <div class="seq-name">${esc(name)} COMPLETED A SEQUENCE!</div>
+            <img src="${SHINCHAN_GIF}" alt="Dancing Shinchan">
+            <div class="seq-name">${esc(name)} GOT A SEQUENCE!</div>
         `;
         document.body.appendChild(alert);
-        setTimeout(() => alert.remove(), 4000);
+        setTimeout(() => alert.remove(), 4500);
     }
     
     function lobby() {
@@ -442,31 +456,32 @@
         <div class="layout-container">
             <div class="left-col">
                 <div class="hand-panel">
-                    <div style="width: 100%; font-size: 12px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.15em; margin-bottom: 8px;">YOUR HAND (${me.hand.length})</div>
-                    ${me.hand.map(c => {
-                        let isDead = cardDead(c, g);
-                        let isRed = ['♥','♦'].includes(c.suit);
-                        return `
-                        <div class="card ${isRed ? 'red' : ''} ${state.selected === c.id ? 'selected' : ''}" onclick="select('${c.id}')" ${!mine && !isDead ? 'disabled' : ''}>
-                            <div style="line-height:1; text-align:left;">${c.label}</div>
-                            ${c.eye ? `<div class="tag">${c.eye==='two'?'WILD':'REMOVE'}</div>` : ''}
-                            
-                            ${isDead ? `
-                                <div class="dead-watermark">
-                                    <span>X</span>
-                                    <button class="discard-dead-btn" onclick="discardDead('${c.id}', event)">DISCARD DEAD</button>
-                                </div>
-                            ` : ''}
-                            
-                            <div style="line-height:1; align-self:flex-end; transform:rotate(180deg);">${c.label}</div>
-                        </div>
-                    `;}).join('')}
+                    <div style="width: 100%; font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 10px;">YOUR HAND (${me.hand.length})</div>
+                    <div class="hand-grid">
+                        ${me.hand.map(c => {
+                            let isDead = cardDead(c, g);
+                            let isRed = ['♥','♦'].includes(c.suit);
+                            return `
+                            <div class="card ${isRed ? 'red' : ''} ${state.selected === c.id ? 'selected' : ''}" onclick="select('${c.id}')" ${!mine && !isDead ? 'disabled' : ''}>
+                                <div style="line-height:1; text-align:left;">${c.label}</div>
+                                ${c.eye ? `<div class="tag">${c.eye==='two'?'WILD':'REMOVE'}</div>` : ''}
+                                
+                                ${isDead ? `
+                                    <div class="dead-watermark">
+                                        <button class="discard-dead-btn" onclick="discardDead('${c.id}', event)">DISCARD DEAD</button>
+                                    </div>
+                                ` : ''}
+                                
+                                <div style="line-height:1; align-self:flex-end; transform:rotate(180deg);">${c.label}</div>
+                            </div>
+                        `;}).join('')}
+                    </div>
                 </div>
                 
                 <div class="chat-panel">
                     <div class="chat-header">COMMS LINK</div>
                     <div class="chat-messages" id="chat-log">
-                        ${g.history.slice(-10).map(h => `<div class="chat-msg">> ${esc(h.text)}</div>`).join('')}
+                        ${g.history.slice(-8).map(h => `<div class="chat-msg">> ${esc(h.text)}</div>`).join('')}
                     </div>
                     <div class="chat-inputs">
                         <div class="emoji-row">
@@ -515,7 +530,8 @@
         <div class="modal-overlay">
             <div class="modal-card">
                 <div style="font-size: 12px; color: var(--neon-teal); font-weight: 800; letter-spacing: 0.2em; margin-bottom: 20px;">MATCH CONCLUDED</div>
-                <img src="nobi-pintu.jpg" style="width:250px; border-radius:12px; margin: 0 auto 20px; display:block; border: 3px solid var(--neon-teal); box-shadow: 0 10px 30px rgba(0,0,0,0.5);" alt="Victory Monkey">
+                <!-- External Monkey GIF URL -->
+                <img src="${MONKEY_GIF}" style="width:250px; border-radius:12px; margin: 0 auto 20px; display:block; border: 3px solid var(--neon-teal); box-shadow: 0 10px 30px rgba(0,0,0,0.5);" alt="Victory Monkey">
                 <h1 style="font-size: 40px; margin: 0 0 15px 0; font-family: var(--font-mono); color: #fff;">${esc(g.winner.name)} WINS!</h1>
                 <button class="btn-primary" onclick="home()">NEW MATCH</button>
             </div>
