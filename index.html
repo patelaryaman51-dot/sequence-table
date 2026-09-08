@@ -34,27 +34,28 @@
     .status-pill { background: rgba(2, 132, 199, 0.1); border: 1px solid var(--accent-primary); color: var(--accent-primary); padding: 6px 16px; border-radius: 20px; font-weight: 600; font-size: 13px; font-family: var(--font-mono); }
 
     /* Main Workspace Layout */
-    .workspace { flex-grow: 1; display: grid; grid-template-columns: 320px 1fr 320px; gap: 24px; padding: 24px; max-width: 1600px; margin: 0 auto; width: 100%; align-items: start; }
+    .workspace { flex-grow: 1; display: grid; grid-template-columns: 340px 1fr 320px; gap: 24px; padding: 24px; max-width: 1600px; margin: 0 auto; width: 100%; align-items: start; }
     @media(max-width: 1200px) { .workspace { grid-template-columns: 1fr; } }
 
-    /* Left Hand Area (Horizontal Box) */
-    .left-hand-panel { display: flex; flex-direction: column; gap: 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-    .hand-horizontal { display: flex; flex-direction: row; gap: 10px; overflow-x: auto; padding: 10px 0; max-width: 100%; align-items: center; }
+    /* Left Hand Area (Filled vertical space) */
+    .left-hand-panel { display: flex; flex-direction: column; gap: 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); min-height: 520px; }
+    .hand-vertical { display: flex; flex-direction: column; gap: 14px; overflow-y: auto; max-height: 600px; padding-right: 4px; }
 
-    /* Center Fixed Board Area (10x10) */
+    /* Center Fixed 3D Board Area (12x12) */
     .center-area { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; position: sticky; top: 90px; }
-    .board-container { width: 100%; max-width: 680px; aspect-ratio: 1; background: #ffffff; border: 3px solid var(--border-color); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr); }
+    .board-container { width: 100%; max-width: 740px; aspect-ratio: 1; background: #ffffff; border: 4px solid #0284c7; border-radius: 20px; box-shadow: 0 20px 40px rgba(2, 132, 199, 0.15), 0 10px 20px rgba(0,0,0,0.1); overflow: hidden; display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(12, 1fr); transform: perspective(1000px); }
     
-    .cell { position: relative; display: grid; place-items: center; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; background: #ffffff; color: var(--text-main); font: 700 13px var(--font-mono); transition: 0.15s; }
+    .cell { position: relative; display: grid; place-items: center; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; background: #ffffff; color: var(--text-main); font: 700 11px var(--font-mono); transition: 0.15s; }
     .cell:nth-child(odd) { background: #f8fafc; }
-    .cell.free { background: #0284c7; color: #ffffff; font-size: 11px; font-family: var(--font-ui); font-weight: 700; letter-spacing: 0.05em; }
-    .cell.legal:hover { background: rgba(2, 132, 199, 0.15); cursor: pointer; color: var(--accent-primary); box-shadow: inset 0 0 0 2px var(--accent-primary); }
-    .chip { width: 76% !important; height: 76% !important; border-radius: 50% !important; background: radial-gradient(circle at 30% 30%, #ffffff 0%, var(--c) 60%, #000000 100%) !important; border: 2px solid rgba(255,255,255,0.8) !important; box-shadow: 0 4px 10px rgba(0,0,0,0.25) !important; display: block !important; position: absolute !important; }
+    .cell.free { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; font-size: 9px; font-family: var(--font-ui); font-weight: 700; letter-spacing: 0.05em; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+    .cell.legal:hover { background: rgba(2, 132, 199, 0.15); cursor: pointer; color: var(--accent-primary); box-shadow: inset 0 0 0 2px var(--accent-primary); z-index: 5; }
+    .chip { width: 78% !important; height: 78% !important; border-radius: 50% !important; background: radial-gradient(circle at 30% 30%, #ffffff 0%, var(--c) 60%, #000000 100%) !important; border: 2px solid rgba(255,255,255,0.9) !important; box-shadow: 0 6px 14px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.6) !important; display: block !important; position: absolute !important; animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
     /* Right Sidebar Panel */
     .sidebar-right { display: flex; flex-direction: column; gap: 20px; }
-    .panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-    .panel-title { font-weight: 700; font-size: 12px; letter-spacing: 0.08em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
+    .panel-title { font-weight: 700; font-size: 11px; letter-spacing: 0.08em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
 
     .chat-box { height: 260px; display: flex; flex-direction: column; }
     .chat-messages { flex-grow: 1; overflow-y: auto; font-size: 13px; color: var(--text-dim); display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; padding-right: 4px; }
@@ -65,28 +66,26 @@
     .btn-icon:hover { background: var(--accent-primary); color: #fff; }
 
     .player-card { background: #f8fafc; border: 1px solid var(--border-color); padding: 12px 14px; border-radius: 10px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .player-card.active { border-color: var(--accent-primary); background: rgba(2, 132, 199, 0.05); box-shadow: 0 0 10px rgba(2, 132, 199, 0.1); }
+    .player-card.active { border-color: var(--accent-primary); background: rgba(2, 132, 199, 0.05); box-shadow: 0 0 15px rgba(2, 132, 199, 0.1); }
     .player-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c); box-shadow: 0 0 6px var(--c); }
 
-    .piles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: center; }
-    .stack-box { background: #f8fafc; border: 1px dashed var(--border-color); border-radius: 8px; padding: 12px; font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); }
-    .stack-val { font-size: 16px; font-weight: 700; color: var(--text-main); margin-top: 6px; }
-
-    /* Card Styling */
-    .card { width: 84px; height: 124px; background: #ffffff; color: #0f172a; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; justify-content: space-between; padding: 8px; font: 700 16px var(--font-mono); transition: 0.2s; position: relative; border: 2px solid var(--border-color); flex-shrink: 0; }
+    /* 3D Card Styling */
+    .card { width: 100%; height: 110px; background: #ffffff; color: #0f172a; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; padding: 12px; font: 700 16px var(--font-mono); transition: 0.2s; position: relative; border: 2px solid var(--border-color); flex-shrink: 0; transform: translateY(0); }
     .card.red { color: var(--accent-danger); }
-    .card:hover { transform: translateY(-4px); box-shadow: 0 8px 18px rgba(0,0,0,0.1); }
-    .card.selected { transform: translateY(-8px); border-color: var(--accent-primary); box-shadow: 0 0 15px var(--accent-glow); }
-    .card .tag { font: 600 8px var(--font-ui); background: #0f172a; color: #fff; padding: 3px 0; border-radius: 3px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 88%; }
-    .discard-dead-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--accent-danger); color: #fff; font: 700 9px var(--font-ui); border: none; padding: 6px 0; width: 90%; border-radius: 4px; z-index: 10; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4); cursor: pointer; }
-    .discard-dead-btn:hover { filter: brightness(1.1); }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.12); }
+    .card.selected { transform: translateY(-6px); border-color: var(--accent-primary); box-shadow: 0 0 20px var(--accent-glow), 0 10px 25px rgba(0,0,0,0.1); }
+    .card .tag { font: 600 9px var(--font-ui); background: #0f172a; color: #fff; padding: 3px 0; border-radius: 4px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; }
+    
+    /* Dead Card Button in Hand */
+    .discard-dead-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--accent-danger); color: #fff; font: 700 10px var(--font-ui); border: none; padding: 8px 0; width: 90%; border-radius: 6px; z-index: 10; box-shadow: 0 6px 15px rgba(220, 38, 38, 0.4); cursor: pointer; transition: 0.15s; }
+    .discard-dead-btn:hover { filter: brightness(1.1); transform: translate(-50%, -52%); }
     
     /* Buttons & Modals */
-    .btn-primary { background: var(--accent-primary); color: #ffffff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 15px; transition: 0.2s; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3); }
+    .btn-primary { background: var(--accent-primary); color: #ffffff; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; font-size: 15px; transition: 0.2s; box-shadow: 0 6px 20px rgba(2, 132, 199, 0.3); }
     .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
-    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); display: grid; place-items: center; z-index: 1000; backdrop-filter: blur(6px); }
-    .modal-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px; text-align: center; max-width: 480px; width: 90%; box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
-    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--bg-card); border: 1px solid var(--accent-primary); color: var(--text-main); padding: 12px 24px; border-radius: 8px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 2000; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); display: grid; place-items: center; z-index: 1000; backdrop-filter: blur(8px); }
+    .modal-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 40px; text-align: center; max-width: 480px; width: 90%; box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
+    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--bg-card); border: 1px solid var(--accent-primary); color: var(--text-main); padding: 12px 24px; border-radius: 10px; font-weight: 600; box-shadow: 0 15px 35px rgba(0,0,0,0.12); z-index: 2000; }
   </style>
 </head>
 <body>
@@ -141,13 +140,12 @@
         app.innerHTML = `
         <div class="modal-overlay">
             <div class="modal-card">
-                <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-primary); letter-spacing: 0.2em; margin-bottom: 8px;">DIGITAL TABLETOP EDITION</div>
+                <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-primary); letter-spacing: 0.2em; margin-bottom: 8px;">DIGITAL TABLETOP EDITION (12x12)</div>
                 <h1 style="font-size: 40px; margin: 0 0 8px 0; font-weight: 700; letter-spacing: -0.02em;">SEQUENCE</h1>
-                <p style="color: var(--text-dim); margin-bottom: 30px; font-size: 14px;">Tactical strategy board game.</p>
+                <p style="color: var(--text-dim); margin-bottom: 30px; font-size: 14px;">Tactical strategy board game with 3D depth.</p>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
                     <button class="btn-primary" onclick="playBeep('click'); setup()">START GAME</button>
                     <button class="btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);" onclick="playBeep('click'); join()">JOIN A ROOM</button>
-                    <button class="btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);" onclick="playBeep('click'); setup()">CREATE A ROOM</button>
                 </div>
             </div>
         </div>`;
@@ -284,17 +282,17 @@
         app.innerHTML = `
         <div id="app">
             <header class="header">
-                <div class="brand">SEQUENCE <span>· TABLE</span></div>
+                <div class="brand">SEQUENCE <span>· 3D TABLE</span></div>
                 <button class="btn-primary" style="padding:6px 14px; font-size:12px;" onclick="navigator.clipboard.writeText('${inviteLink}');toast('Invite link copied!')">📋 INVITE FRIEND</button>
                 <div class="status-pill">${mine ? 'YOUR TURN' : `TURN: ${turnPlayerName.toUpperCase()}`}</div>
                 <button class="btn-icon" onclick="playBeep('click'); audioEnabled=!audioEnabled; toast(audioEnabled?'Audio Enabled':'Audio Muted')">🔊 AUDIO</button>
             </header>
 
             <div class="workspace">
-                <!-- Left Column: Horizontal Hand & Player Stats -->
+                <!-- Left Column: Hand of Cards filling vertical space -->
                 <div class="left-hand-panel">
                     <div class="panel-title">Your Hand (${me.hand.length})</div>
-                    <div class="hand-horizontal">
+                    <div class="hand-vertical">
                         ${me.hand.map(c => {
                             let isDead = cardDead(c, g);
                             return `
@@ -308,7 +306,7 @@
                     </div>
                 </div>
 
-                <!-- Center Board (10x10 Fixed Position) -->
+                <!-- Center 3D Board (12x12 Fixed Position) -->
                 <div class="center-area">
                     <div class="board-container">
                         ${g.board.map(c => `
