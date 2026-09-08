@@ -13,7 +13,6 @@
         --neon-teal: #4fd1c5;
         --neon-green: #38a169;
         --neon-red: #e53e3e;
-        --neon-blue: #3182ce;
         --panel-bg: rgba(6, 18, 14, 0.85);
         --panel-border: rgba(79, 209, 197, 0.25);
         --text-main: #e2e8f0;
@@ -88,7 +87,6 @@
     }
     .header-title { font-weight: 800; font-size: 15px; letter-spacing: 0.15em; color: #fff; text-transform: uppercase; }
     .header-invite { font-size: 11px; font-weight: 700; background: var(--neon-teal); color: #000; padding: 6px 16px; border-radius: 12px; cursor: pointer; transition: 0.2s; border: none; text-transform: uppercase; }
-    .header-invite:hover { box-shadow: 0 0 15px var(--neon-teal); transform: scale(1.05); }
 
     .status-panel {
         background: var(--panel-bg);
@@ -97,15 +95,10 @@
         padding: 20px;
         text-align: center;
         backdrop-filter: blur(10px);
-        box-shadow: 0 0 30px rgba(79, 209, 197, 0.15);
     }
-    .status-title { font-weight: 800; font-size: 18px; color: var(--neon-teal); text-transform: uppercase; letter-spacing: 0.05em; }
+    .status-title { font-weight: 800; font-size: 18px; color: var(--neon-teal); text-transform: uppercase; }
 
-    .players-panel {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
+    .players-panel { display: flex; flex-direction: column; gap: 12px; }
     .players-header { font-size: 12px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase; }
     .player-row {
         background: var(--panel-bg);
@@ -113,12 +106,9 @@
         border-radius: 12px;
         padding: 16px;
         backdrop-filter: blur(10px);
-        position: relative;
-        transition: 0.2s;
     }
     .player-row.active { border-color: var(--neon-teal); box-shadow: inset 0 0 15px rgba(79,209,197,0.15); }
-    .player-name { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 10px; color: #fff; }
-    .player-icon { font-size: 14px; }
+    .player-name { font-weight: 800; font-size: 15px; color: #fff; }
     .player-stats { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
     .current-turn-tag { font-size: 11px; font-weight: 800; color: var(--neon-teal); margin-top: 8px; letter-spacing: 0.1em; }
 
@@ -148,7 +138,7 @@
     }
     .chat-header { padding: 12px 16px; font-size: 11px; font-weight: 800; border-bottom: 1px solid var(--panel-border); color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
     .chat-messages { flex-grow: 1; overflow-y: auto; padding: 12px 16px; font-size: 13px; display: flex; flex-direction: column; gap: 8px; }
-    .chat-msg { line-height: 1.4; color: #cbd5e1; }
+    .chat-msg { color: #cbd5e1; }
     .chat-msg span { font-weight: 800; color: var(--neon-teal); }
     .chat-inputs { padding: 12px 16px; border-top: 1px solid var(--panel-border); background: rgba(0,0,0,0.4); }
     .emoji-row { display: flex; gap: 12px; margin-bottom: 10px; font-size: 18px; }
@@ -156,7 +146,6 @@
     .emoji-row span:hover { transform: scale(1.2); }
     .input-bar { display: flex; gap: 8px; }
     .chat-input { flex-grow: 1; background: rgba(0,0,0,0.6); border: 1px solid var(--panel-border); border-radius: 8px; padding: 10px 12px; color: #fff; outline: none; font-size: 13px; }
-    .chat-input:focus { border-color: var(--neon-teal); }
 
     .board-container {
         width: min(85vh, 100%);
@@ -164,16 +153,11 @@
         background: #0f172a;
         border: 4px solid var(--neon-teal);
         border-radius: 16px;
-        box-shadow: 
-            0 20px 50px rgba(0,0,0,0.8),
-            0 0 0 1px rgba(255,255,255,0.1) inset,
-            0 0 30px rgba(79, 209, 197, 0.2);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(79, 209, 197, 0.2);
         display: grid;
         grid-template-columns: repeat(10, 1fr);
         grid-template-rows: repeat(10, 1fr);
         overflow: hidden;
-        transform-style: preserve-3d;
-        perspective: 1000px;
     }
     
     .cell {
@@ -185,7 +169,6 @@
         color: #0f172a;
         font: 800 clamp(10px, 2vh, 22px) var(--font-mono);
         transition: 0.2s;
-        box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
     }
     .cell.red-suit { color: var(--neon-red); }
     .cell:nth-child(odd) { background: #ffffff; }
@@ -198,7 +181,7 @@
         border-radius: 50%; 
         background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, var(--c) 40%, #000000 100%); 
         border: 2px solid rgba(255,255,255,0.3); 
-        box-shadow: 0 4px 10px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.6); 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.6); 
         position: absolute; 
         z-index: 2;
     }
@@ -208,20 +191,19 @@
         background: #ffffff;
         color: #0f172a;
         border-radius: 8px;
-        box-shadow: -2px 5px 15px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(0,0,0,0.1);
+        box-shadow: -2px 5px 15px rgba(0,0,0,0.5);
         display: flex; flex-direction: column; justify-content: space-between;
         padding: 8px;
         font: 800 18px var(--font-mono);
         border: 2px solid transparent;
-        transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: 0.2s;
         position: relative;
         cursor: pointer;
     }
     .card.red { color: var(--neon-red); }
-    .card:hover:not(:disabled) { transform: translateY(-10px) scale(1.05); z-index: 5; box-shadow: -5px 15px 25px rgba(0,0,0,0.6); }
     .card.selected { transform: translateY(-15px) scale(1.05); border-color: var(--neon-teal); box-shadow: 0 0 25px rgba(79, 209, 197, 0.5); z-index: 5; }
     .card:disabled { opacity: 0.4; filter: grayscale(1); cursor: not-allowed; }
-    .card .tag { font: 800 9px var(--font-ui); background: #0f172a; color: #fff; padding: 4px 0; border-radius: 4px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; letter-spacing: 0.05em; }
+    .card .tag { font: 800 9px var(--font-ui); background: #0f172a; color: #fff; padding: 4px 0; border-radius: 4px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; }
     
     .dead-watermark {
         position: absolute; inset: 0;
@@ -234,17 +216,14 @@
     .discard-dead-btn { 
         background: var(--neon-red); color: #fff; font: 800 11px var(--font-ui); 
         border: none; padding: 10px 0; width: 90%; border-radius: 6px; 
-        z-index: 10; box-shadow: 0 5px 15px rgba(229, 62, 62, 0.6); cursor: pointer; transition: 0.15s; 
+        z-index: 10; cursor: pointer; 
     }
-    .discard-dead-btn:hover { background: #fc8181; transform: scale(1.05); }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); display: grid; place-items: center; z-index: 1000; backdrop-filter: blur(10px); }
-    .modal-card { background: var(--panel-bg); border: 1px solid var(--neon-teal); border-radius: 20px; padding: 40px; text-align: center; max-width: 500px; width: 90%; box-shadow: 0 0 50px rgba(79, 209, 197, 0.2); }
-    .btn-primary { background: var(--neon-teal); color: #000; border: none; padding: 14px 28px; border-radius: 10px; font-weight: 800; font-size: 15px; transition: 0.2s; box-shadow: 0 0 20px rgba(79, 209, 197, 0.3); text-transform: uppercase; width: 100%; margin-top: 12px; cursor: pointer; }
-    .btn-primary:hover { filter: brightness(1.2); box-shadow: 0 0 30px rgba(79, 209, 197, 0.5); }
+    .modal-card { background: var(--panel-bg); border: 1px solid var(--neon-teal); border-radius: 20px; padding: 40px; text-align: center; max-width: 500px; width: 90%; }
+    .btn-primary { background: var(--neon-teal); color: #000; border: none; padding: 14px 28px; border-radius: 10px; font-weight: 800; font-size: 15px; width: 100%; margin-top: 12px; cursor: pointer; }
     .form-input { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--panel-border); border-radius: 8px; padding: 14px; color: #fff; font-size: 15px; margin-bottom: 12px; outline: none; }
-    .form-input:focus { border-color: var(--neon-teal); }
-    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--panel-bg); border: 1px solid var(--neon-teal); color: var(--text-main); padding: 14px 28px; border-radius: 12px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 2000; font-size: 14px; letter-spacing: 0.05em; }
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--panel-bg); border: 1px solid var(--neon-teal); color: var(--text-main); padding: 14px 28px; border-radius: 12px; font-weight: 700; z-index: 2000; font-size: 14px; }
 
     .sequence-alert {
         position: fixed;
@@ -259,26 +238,11 @@
         align-items: center;
         gap: 20px;
         z-index: 9999;
-        box-shadow: 0 0 60px rgba(79, 209, 197, 0.5), inset 0 0 20px rgba(79, 209, 197, 0.2);
-        animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        animation: popIn 0.6s forwards;
     }
-    .sequence-alert img {
-        width: 180px;
-        border-radius: 12px;
-        border: 2px solid var(--panel-border);
-    }
-    .sequence-alert .seq-name {
-        font-size: 24px;
-        font-weight: 800;
-        color: var(--neon-teal);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        text-align: center;
-    }
-    @keyframes popIn {
-        0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-        100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    }
+    .sequence-alert img { width: 180px; border-radius: 12px; border: 2px solid var(--panel-border); }
+    .sequence-alert .seq-name { font-size: 24px; font-weight: 800; color: var(--neon-teal); text-transform: uppercase; text-align: center; }
+    @keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
   </style>
 </head>
 <body>
@@ -377,39 +341,35 @@
             state.game = JSON.parse(e.data);
             
             // Check for new sequences to show Shinchan GIF popup
-        let newSeqName = null;
-        if (state.game && state.game.started) {
-            state.game.players.forEach(p => {
-                if (prevSequences[p.id] !== undefined && p.sequences > prevSequences[p.id]) {
-                    newSeqName = state.game.mode === 'team' ? (p.seat % 2 ? 'RED TEAM' : 'BLUE TEAM') : p.name;
-                }
-                prevSequences[p.id] = p.sequences;
-            });
-            
-            // Show sequence popup if not game over
-            if (newSeqName && !state.game.winner) {
-                showSequenceAlert(newSeqName);
+            let newSeqName = null;
+            if (state.game && state.game.started) {
+                state.game.players.forEach(p => {
+                    if (prevSequences[p.id] !== undefined && p.sequences > prevSequences[p.id]) {
+                        newSeqName = state.game.mode === 'team' ? (p.seat % 2 ? 'RED TEAM' : 'BLUE TEAM') : p.name;
+                    }
+                    prevSequences[p.id] = p.sequences;
+                });
+                
+                if (newSeqName && !state.game.winner) showSequenceAlert(newSeqName);
             }
-        }
 
-        if (state.game.started) game(); else lobby();
-    });
-}
+            if (state.game.started) game(); else lobby();
+        });
+    }
 
-function showSequenceAlert(name) {
-    // Prevent stacking alerts
-    document.querySelector('.sequence-alert')?.remove();
-    const alert = document.createElement('div');
-    alert.className = 'sequence-alert';
-    alert.innerHTML = `
-        <img src="shinchan.gif" alt="Dancing Shinchan">
-        <div class="seq-name">${esc(name)} COMPLETED A SEQUENCE!</div>
-    `;
-    document.body.appendChild(alert);
-    setTimeout(() => alert.remove(), 4000);
-}
+    function showSequenceAlert(name) {
+        document.querySelector('.sequence-alert')?.remove();
+        const alert = document.createElement('div');
+        alert.className = 'sequence-alert';
+        alert.innerHTML = `
+            <img src="shinchan.gif" alt="Dancing Shinchan">
+            <div class="seq-name">${esc(name)} COMPLETED A SEQUENCE!</div>
+        `;
+        document.body.appendChild(alert);
+        setTimeout(() => alert.remove(), 4000);
+    }
     
-function lobby() {
+    function lobby() {
         let g = state.game || { code: state.room, players: [], max: state.max, host: state.player };
         let inviteLink = shareOrigin + '/?room=' + g.code;
         app.innerHTML = `
@@ -561,9 +521,9 @@ function lobby() {
             </div>
         </div>` : ''}
         `;
-}
+    }
 
-function select(cardId) {
+    function select(cardId) {
         if (state.selected === cardId) { state.selected = null; game(); return; }
         state.selected = cardId;
         game();
