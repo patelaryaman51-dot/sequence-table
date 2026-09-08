@@ -119,7 +119,7 @@
     .chat-panel {
         position: absolute;
         bottom: 20px; left: 20px;
-        width: 300px;
+        width: 250px;
         background: var(--panel-bg);
         border: 1px solid var(--panel-border);
         border-radius: 12px;
@@ -208,16 +208,20 @@
 
     .hand-panel {
         position: absolute;
-        bottom: 20px; left: 50%;
-        transform: translateX(-50%);
+        top: 20px; left: 20px;
         display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        width: 250px;
         gap: 12px;
         z-index: 10;
         background: var(--panel-bg);
-        padding: 15px 25px;
+        padding: 15px;
         border-radius: 16px;
         border: 1px solid var(--panel-border);
         backdrop-filter: blur(10px);
+        max-height: calc(100vh - 300px);
+        overflow-y: auto;
     }
     
     .card {
@@ -234,8 +238,8 @@
         position: relative;
     }
     .card.red { color: var(--neon-red); }
-    .card:hover:not(:disabled) { transform: translateY(-10px); cursor: pointer; }
-    .card.selected { transform: translateY(-15px); border-color: var(--neon-teal); box-shadow: 0 0 25px rgba(79, 209, 197, 0.4); }
+    .card:hover:not(:disabled) { transform: scale(1.05); cursor: pointer; z-index: 2; }
+    .card.selected { transform: scale(1.05); border-color: var(--neon-teal); box-shadow: 0 0 25px rgba(79, 209, 197, 0.4); z-index: 2; }
     .card:disabled { opacity: 0.5; filter: grayscale(1); }
     .card .tag { font: 700 10px var(--font-ui); background: #1a202c; color: #fff; padding: 4px 0; border-radius: 4px; text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; }
     
@@ -550,6 +554,7 @@
         </div>
 
         <div class="hand-panel">
+            <div style="width: 100%; font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 5px;">YOUR HAND</div>
             ${me.hand.map(c => {
                 let isDead = cardDead(c, g);
                 let isRed = ['♥','♦'].includes(c.suit);
