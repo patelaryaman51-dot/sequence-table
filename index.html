@@ -32,7 +32,7 @@
         background-size: 50px 50px;
         color: var(--text-main); 
         font-family: var(--font-ui); 
-        overflow: hidden; 
+        overflow-x: hidden; 
         height: 100vh;
         width: 100vw;
     }
@@ -271,10 +271,60 @@
     .sequence-alert img { width: 220px; border-radius: 12px; }
     .sequence-alert .seq-name { font-size: 28px; font-weight: 800; color: var(--neon-teal); text-transform: uppercase; text-align: center; }
     @keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+
+    /* =========================================
+       RESPONSIVE LAYOUT (IPAD & MOBILE)
+       ========================================= */
+    
+    /* Tablet / iPad Landscape */
+    @media (max-width: 1100px) {
+        body { height: auto; overflow-y: auto; }
+        .layout-container {
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: auto auto;
+            height: auto;
+            min-height: 100vh;
+        }
+        .left-col { grid-column: 1 / 2; grid-row: 1 / 3; }
+        .center-col { grid-column: 2 / 3; grid-row: 1 / 2; }
+        .right-col { 
+            grid-column: 2 / 3; 
+            grid-row: 2 / 3; 
+            flex-direction: row; 
+            flex-wrap: wrap; 
+        }
+        .status-panel, .players-panel, .dead-pile-panel { flex: 1; min-width: 200px; }
+    }
+
+    /* Mobile Phones & Small Tablets */
+    @media (max-width: 768px) {
+        .layout-container {
+            display: flex;
+            flex-direction: column;
+            padding: 100px 10px 20px 10px;
+        }
+        .header-banner {
+            width: 90%;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+        .board-container {
+            width: 100%;
+            max-width: 95vw;
+            height: auto;
+            max-height: none;
+        }
+        .hand-panel { min-height: 250px; }
+        .right-col { flex-direction: column; }
+        .cell { font-size: clamp(8px, 3vw, 16px); }
+        .cell.free { font-size: clamp(6px, 2vw, 10px); }
+        .card { min-height: 60px; }
+    }
   </style>
 </head>
 <body>
-  <!-- PERSISTENT YOUTUBE PLAYLIST PLAYER -->
   <div id="persistent-music" class="music-panel" style="opacity: 0; pointer-events: none; position: absolute; z-index: 50; box-sizing: border-box; margin: 0; transition: opacity 0.3s;">
       <div class="music-header" style="padding: 0 4px 10px 4px; font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;">YOUTUBE MIX PLAYLIST</div>
       <iframe 
@@ -544,7 +594,6 @@
         </div>
 
         <div class="layout-container">
-            <!-- Left Side: Hand, Music, and Chat -->
             <div class="left-col">
                 <div class="hand-panel">
                     <div style="width: 100%; font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.1em;">YOUR HAND</div>
@@ -561,7 +610,6 @@
                     </div>
                 </div>
 
-                <!-- PERSISTENT MUSIC PLACEHOLDER (Real player hovers over this) -->
                 <div id="music-slot" class="music-panel" style="visibility: hidden; height: 180px; flex-shrink: 0;"></div>
                 
                 <div class="chat-panel">
@@ -580,7 +628,6 @@
                 </div>
             </div>
 
-            <!-- Center Side: The Main 10x10 Board -->
             <div class="center-col">
                 <div class="board-container">
                     ${g.board.map(c => `
@@ -591,7 +638,6 @@
                 </div>
             </div>
 
-            <!-- Right Side: Turn Status, Players, and Dead Pile -->
             <div class="right-col">
                 <div class="status-panel">
                     <div class="status-title">IT'S ${esc(turnPlayer.name).toUpperCase()}'S TURN!</div>
@@ -625,7 +671,6 @@
         <div class="modal-overlay">
             <div class="modal-card">
                 <div style="font-size: 12px; color: var(--neon-teal); font-weight: 800; letter-spacing: 0.2em; margin-bottom: 20px;">MATCH CONCLUDED</div>
-                <!-- FUNNY MONKEY VICTORY GIF -->
                 <img src="${WIN_GIF}" style="width:250px; border-radius:12px; margin: 0 auto 20px; display:block; border: 3px solid var(--neon-teal); box-shadow: 0 10px 30px rgba(0,0,0,0.5);" alt="Victory Monkey">
                 <h1 style="font-size: 40px; margin: 0 0 15px 0; font-family: var(--font-mono); color: #fff;">${esc(g.winner.name)} WINS!</h1>
                 <button class="btn-primary" onclick="home()">NEW MATCH</button>
